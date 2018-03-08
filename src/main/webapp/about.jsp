@@ -64,6 +64,15 @@
         This page should also be used to describe the features and improvements
         you've added.
       </p>
+     
+      <p>
+        These are the members of Team 18!
+        <li>Ugonna Iheanacho</li>
+        <li>Caitlin (Cait) Schmuck</li>
+        <li>Sarah Yuan</li>
+        <li>Michelle Zhong</li>
+        <li>Kyra Busser (PA)</li> 
+      </p>
     </div>
   </div>
 </body>
