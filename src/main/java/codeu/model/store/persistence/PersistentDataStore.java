@@ -46,7 +46,6 @@ public class PersistentDataStore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
