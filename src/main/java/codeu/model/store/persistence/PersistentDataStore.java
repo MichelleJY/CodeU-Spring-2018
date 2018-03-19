@@ -46,6 +46,7 @@ public class PersistentDataStore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+  
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
@@ -60,12 +61,13 @@ public class PersistentDataStore {
     Query query = new Query("chat-users");
     PreparedQuery results = datastore.prepare(query);
 
+  /** TODO: get password from DataStore */
     for (Entity entity : results.asIterable()) {
       try {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String userName = (String) entity.getProperty("username");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, creationTime);
+        User user = new User(uuid, userName, null, creationTime);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
