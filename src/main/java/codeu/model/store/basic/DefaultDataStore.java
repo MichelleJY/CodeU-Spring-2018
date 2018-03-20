@@ -76,7 +76,6 @@ public class DefaultDataStore {
     }
   }
 
-
   public boolean isValid() {
     return true;
   }
