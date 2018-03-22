@@ -76,8 +76,8 @@ public class LoginServletTest {
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     
-    User inputUser = new User(UUID.randomUUID(), "test username", "test password", Instant.now());
-    Mockito.when(mockUserStore.getUser("test username")).thenReturn(inputUser);
+    User storedUser = new User(UUID.randomUUID(), "test username", "test password", Instant.now());
+    Mockito.when(mockUserStore.getUser("test username")).thenReturn(storedUser);
 
     loginServlet.setUserStore(mockUserStore);
 
@@ -85,7 +85,6 @@ public class LoginServletTest {
 
     Mockito.verify(mockRequest).setAttribute("error", "Invalid password.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-    
   }
 
   @Test
@@ -97,8 +96,8 @@ public class LoginServletTest {
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
 
-    User inputUser = new User(UUID.randomUUID(), "test username", "test password", Instant.now());
-    Mockito.when(mockUserStore.getUser("test username")).thenReturn(inputUser);
+    User storedUser = new User(UUID.randomUUID(), "test username", "test password", Instant.now());
+    Mockito.when(mockUserStore.getUser("test username")).thenReturn(storedUser);
 
     loginServlet.setUserStore(mockUserStore);
     
@@ -109,10 +108,5 @@ public class LoginServletTest {
 
     Mockito.verify(mockSession).setAttribute("user", "test username");
     Mockito.verify(mockResponse).sendRedirect("/conversations");
-
-
-
   }
-
-
 }
