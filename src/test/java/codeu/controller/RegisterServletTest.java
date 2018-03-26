@@ -22,13 +22,16 @@ public class RegisterServletTest {
   private HttpServletRequest mockRequest;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
-
+  private UserStore mockUserStore;
+  private HttpSession mockSession;
   @Before
   public void setup() {
     registerServlet = new RegisterServlet();
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
+    mockUserStore = Mockito.mock(UserStore.class);
+    mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp")).thenReturn(mockRequestDispatcher);
   }
 
@@ -55,22 +58,19 @@ public class RegisterServletTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("Testertest");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("password");
 
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = Mockito.mock(PrintWriter.class);
-    Mockito.when(mockResponse.getWriter()).thenReturn(printWriter);    
+    PrintWriter mockPrintWriter = Mockito.mock(PrintWriter.class);
+    Mockito.when(mockResponse.getWriter()).thenReturn(mockPrintWriter);    
 
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("Testertest")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
 
-    HttpSession mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     registerServlet.doPost(mockRequest, mockResponse);
 
-    Mockito.verify(printWriter).println("<p>Username: Testertest</p>");
-    Mockito.verify(printWriter).println("<p>Password: password</p>");
-    
+    Mockito.verify(mockPrintWriter).println("<p>Username: Testertest</p>");
+    Mockito.verify(mockPrintWriter).println("<p>Password: password</p>");
+
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
 
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
@@ -84,11 +84,9 @@ public class RegisterServletTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("Testertest");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("password");
 
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("Testertest")).thenReturn(true);
     registerServlet.setUserStore(mockUserStore);
-
-    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     registerServlet.doPost(mockRequest, mockResponse);

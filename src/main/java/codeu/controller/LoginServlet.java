@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet class responsible for the login page. */
 public class LoginServlet extends HttpServlet {
 
-
-
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
