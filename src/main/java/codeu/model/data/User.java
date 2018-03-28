@@ -16,6 +16,7 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Class representing a registered user. */
 public class User {
@@ -50,6 +51,7 @@ public class User {
   }
 
   /** Returns the password of this User. */
+  //modified this, not sure if i was supposed to
   public String getPassword(){
     return password;
   }

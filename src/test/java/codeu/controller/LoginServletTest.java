@@ -29,6 +29,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import java.util.UUID;
 import java.time.Instant;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginServletTest {
 
@@ -71,12 +72,12 @@ public class LoginServletTest {
   @Test
   public void testDoPost_ExistingUserWithIncorrectPassword() throws IOException, ServletException{
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn("bad password");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("password");
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     
-    User storedUser = new User(UUID.randomUUID(), "test username", "test password", Instant.now());
+    User storedUser = new User(UUID.randomUUID(), "test username", BCrypt.hashpw("test password", BCrypt.gensalt()), Instant.now());
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(storedUser);
 
     loginServlet.setUserStore(mockUserStore);
@@ -96,7 +97,8 @@ public class LoginServletTest {
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
 
-    User storedUser = new User(UUID.randomUUID(), "test username", "test password", Instant.now());
+    User storedUser = new User(UUID.randomUUID(), "test username", BCrypt.hashpw("test password", BCrypt.gensalt()), Instant.now());
+
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(storedUser);
 
     loginServlet.setUserStore(mockUserStore);

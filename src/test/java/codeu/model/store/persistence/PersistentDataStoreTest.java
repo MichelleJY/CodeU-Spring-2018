@@ -59,7 +59,7 @@ public class PersistentDataStoreTest {
     User resultUserOne = resultUsers.get(0);
     Assert.assertEquals(idOne, resultUserOne.getId());
     Assert.assertEquals(nameOne, resultUserOne.getName());
-    Assert.assertEquals("password", resultUserOne.getPassword());
+    Assert.assertEquals("password", resultUserOne.getPassword()); //first param is plain text, second is hashed
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
 
     User resultUserTwo = resultUsers.get(1);
