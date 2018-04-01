@@ -33,11 +33,15 @@
                 <%= request.getSession().getAttribute("user") %>!'s' 
             <% } %>
             Profile Page</h1>
-            <img src="https://i.imgur.com/z4amwTY.png" style="border-radius: 50%; height: 50%; width: 50%">
+            <img id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
+        </div>
+        <div id="leftContainer">
+            <h1>About Me</h1>
+            <textarea id="aboutMe" rows='25'></textarea>
         </div>
         <div id="rightContainer">
-            <h1>Test</h1>
-            <textarea id="aboutMe"></textarea>
+            <h1>Recent Activity</h1>
+            <textarea id="activity" rows='25' cols='35'></textarea>
         </div>
     </div>
 </body>
