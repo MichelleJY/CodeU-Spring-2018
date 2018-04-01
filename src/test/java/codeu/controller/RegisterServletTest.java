@@ -80,8 +80,9 @@ public class RegisterServletTest {
     Assert.assertEquals(storedUser.getName(), "Testertest");
 
     //BCrypt.checkpw() checks that the second param is correctly hashed  
-    Assert.assertTrue(BCrypt.checkpw("password", storedUser.getPassword()));   
-    Assert.assertTrue(!(storedUser.getPassword().equals("password")));
+    Assert.assertTrue(BCrypt.checkpw("password", storedUser.getPassword()));  
+    //checks that stored password is hashed and not plain text 
+    Assert.assertNotEquals("password", storedUser.getPassword());
     Mockito.verify(mockResponse).sendRedirect("/login");
 
   }
