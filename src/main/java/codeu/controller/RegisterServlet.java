@@ -38,7 +38,6 @@ public class RegisterServlet extends HttpServlet {
     this.userStore = userStore;
   }
 
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws IOException, ServletException { 
