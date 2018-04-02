@@ -1,12 +1,4 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="/css/main.css">
-<style>
-    label {
-      display: inline-block;
-      width: 100px;
-    }
-  </style>
-
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
