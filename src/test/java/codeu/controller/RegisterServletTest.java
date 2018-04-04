@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 public class RegisterServletTest {
 
@@ -73,10 +75,16 @@ public class RegisterServletTest {
 
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
 
-    Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
-    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "Testertest");
+    Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture()); 
+    User storedUser = userArgumentCaptor.getValue();
+    Assert.assertEquals(storedUser.getName(), "Testertest");
 
+    //BCrypt.checkpw() checks that the second param is correctly hashed  
+    Assert.assertTrue(BCrypt.checkpw("password", storedUser.getPassword()));  
+    //checks that stored password is hashed and not plain text 
+    Assert.assertNotEquals("password", storedUser.getPassword());
     Mockito.verify(mockResponse).sendRedirect("/login");
+
   }
 
   @Test
@@ -96,4 +104,5 @@ public class RegisterServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+
 }
