@@ -12,7 +12,7 @@
         <div id="leftContainer">
             <h1>
             <% if(request.getSession().getAttribute("user") != null){ %>
-                <%= request.getSession().getAttribute("user") %>!'s' 
+                <%= request.getSession().getAttribute("user") %>'s' 
             <% } %>
             Profile Page</h1>
             <img id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
