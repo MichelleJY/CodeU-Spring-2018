@@ -1,0 +1,21 @@
+#pageContainer {
+    margin-left: 5%;
+    margin-right: auto;
+    width: auto;
+}
+
+#leftContainer {
+    float: left;
+    width: 30%;
+}
+
+#rightContainer {
+    float: right;
+    width: 30%;
+}
+
+#profilePicture {
+    border-radius: 20%;
+    height: 50%;
+    width: 50%
+}
