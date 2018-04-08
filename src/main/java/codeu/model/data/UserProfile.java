@@ -35,11 +35,11 @@ public class UserProfile {
       * @param profilePicture The link to this user's profile picture
       * @param lastTimeOnline The time the user was last online
       */
-    public UserProfile(UUID id, String aboutMe, String profilePicture, Instant lastTimeOnline) {
+    public UserProfile(UUID id, String aboutMe, String profilePicture, Map<String, String> interests, Instant lastTimeOnline) {
         this.id = id;
         this.aboutMe = aboutMe;
         this.profilePicture = profilePicture;
-        this.interests = new HashMap<>();
+        this.interests = interests;
         this.lastTimeOnline = lastTimeOnline;
     }
 

@@ -20,7 +20,6 @@ import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class UserProfileTest {
 
@@ -30,9 +29,10 @@ public class UserProfileTest {
     String aboutMe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     String profilePicture = "hrefLinkHere";
     Map<String, String> interests = new HashMap<>();
+    interests.put("Sports", "Snowboarding");
     Instant lastTimeOnline = Instant.now();
     
-    UserProfile userProfile = new UserProfile(id, aboutMe, profilePicture, lastTimeOnline); 
+    UserProfile userProfile = new UserProfile(id, aboutMe, profilePicture, interests, lastTimeOnline); 
     
     Assert.assertEquals(id, userProfile.getId());
     Assert.assertEquals(aboutMe, userProfile.getAboutMe());
