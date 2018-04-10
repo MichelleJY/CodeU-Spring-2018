@@ -22,10 +22,10 @@ import java.util.UUID;
 /** Class representing a registered user's profile. */
 public class UserProfile {
     private final UUID id;
-    private final String aboutMe;
-    private final String profilePicture;
-    private final Map<String,String> interests;
-    private final Instant lastTimeOnline;
+    private String aboutMe;
+    private String profilePicture;
+    private Map<String,String> interests;
+    private Instant lastTimeOnline;
 
     /**
       * Constructs a new UserProfile.
@@ -61,5 +61,22 @@ public class UserProfile {
 
     public Instant getlastTimeOnline() {
         return this.lastTimeOnline;
+    }
+    
+    public void setAboutMe(String about){
+        this.aboutMe = about;
+    }
+    
+    public void setProfilePicture(String picture){
+        this.profilePicture = picture;
+    }
+
+    public void addInterest(String category, String interest){
+        this.interests.put(category, interest);
+
+    }
+
+    public void setLastTimeOnline(Instant time){
+        this.lastTimeOnline = time;
     }
 }

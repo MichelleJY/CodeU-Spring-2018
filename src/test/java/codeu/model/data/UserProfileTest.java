@@ -40,4 +40,35 @@ public class UserProfileTest {
     Assert.assertEquals(interests, userProfile.getInterests()); 
     Assert.assertEquals(lastTimeOnline, userProfile.getlastTimeOnline());
   }
+
+
+  @Test
+  public void testUpdate() {
+    UUID id = UUID.randomUUID();
+    String aboutMe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    String profilePicture = "hrefLinkHere";
+    Map<String, String> interests = new HashMap<>();
+    interests.put("Sports", "Snowboarding");
+    Instant lastTimeOnline = Instant.now();
+    
+    UserProfile userProfile = new UserProfile(id, aboutMe, profilePicture, interests, lastTimeOnline); 
+
+    String newAboutMe = "This is a new about me update";
+    String newProfilePicture = "newLinkHere";
+    String newCategory = "Books";
+    String newInterest = "Series of Unfortunate Events";
+    interests.put(newCategory, newInterest);
+    Instant newTimeOnline = Instant.now();
+
+    userProfile.setAboutMe(newAboutMe);
+    userProfile.setProfilePicture(newProfilePicture);
+    userProfile.setLastTimeOnline(newTimeOnline);
+    userProfile.addInterest(newCategory, newInterest);
+    
+    Assert.assertEquals(id, userProfile.getId());
+    Assert.assertEquals(newAboutMe, userProfile.getAboutMe());
+    Assert.assertEquals(newProfilePicture, userProfile.getProfilePicture());
+    Assert.assertEquals(interests, userProfile.getInterests()); 
+    Assert.assertEquals(newTimeOnline, userProfile.getlastTimeOnline());
+  }
 }

@@ -18,8 +18,11 @@
             <img id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
         </div>
         <div id="leftContainer">
-            <h1>About Me</h1>
-            <textarea id="aboutMe" rows='25'></textarea>
+            <form action="/profilepage">
+             <label for = "aboutMe">About Me </label>
+             <textarea name ="aboutMe" id="aboutMe" rows='25'></textarea>
+             <input type = "submit" value = "Update">
+            </form>
         </div>
         <div id="rightContainer">
             <h1>Recent Activity</h1>
