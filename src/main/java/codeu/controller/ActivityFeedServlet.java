@@ -64,8 +64,8 @@ public class ActivityFeedServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user navigates to the conversations page. It gets all of the
-   * conversations from the model and forwards to conversations.jsp for rendering the list.
+   * This function fires when a user navigates to the activity feed page. It gets all of the
+   * conversations from the model and forwards to activityFeed.jsp for rendering the list.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)

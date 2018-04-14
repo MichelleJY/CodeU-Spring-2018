@@ -22,7 +22,7 @@
 <html>
 <head>
   <%@include file="navigationbar.jsp" %>
-  <title>Activity Feedhi</title>
+  <title>Activity Feed</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -47,18 +47,15 @@
           <li>A new conversation was created: <a href="/chat/<%= conversation.getTitle() %>">  
           <%= conversation.getTitle() %></a> </li>
         <%
-          }
+          } 
         %>
         </ul>
-
       <%
       }
       %>
     <% 
        } 
     %>
-
-
     <hr/>
   </div>
 </body>
