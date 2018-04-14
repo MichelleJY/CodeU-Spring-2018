@@ -55,9 +55,9 @@ public class UserProfileTest {
 
     String newAboutMe = "This is a new about me update";
     String newProfilePicture = "newLinkHere";
-    String newCategory = "Books";
-    String newInterest = "Series of Unfortunate Events";
-    interests.put(newCategory, newInterest);
+    String newCategory = "Sports";
+    String newInterest = "Tennis";
+    interests.put(newCategory, interests.get(newCategory) + ", " + newInterest);
     Instant newTimeOnline = Instant.now();
 
     userProfile.setAboutMe(newAboutMe);

@@ -72,7 +72,11 @@ public class UserProfile {
     }
 
     public void addInterest(String category, String interest){
-        this.interests.put(category, interest);
+        if(interests.containsKey(category))
+            interests.put(category, interests.get(category) + ", " + interest);
+        
+        else
+        interests.put(category, interest);
 
     }
 
