@@ -15,17 +15,16 @@
 package codeu.model.data;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.time.Instant;
 import java.util.UUID;
 
 /** Class representing a registered user's profile. */
 public class UserProfile {
     private final UUID id;
-    private final String aboutMe;
-    private final String profilePicture;
-    private final Map<String,String> interests;
-    private final Instant lastTimeOnline;
+    private String aboutMe;
+    private String profilePicture;
+    private Map<String,String> interests;
+    private Instant lastTimeOnline;
 
     /**
       * Constructs a new UserProfile.
