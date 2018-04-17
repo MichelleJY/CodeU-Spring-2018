@@ -45,12 +45,18 @@ public class ProfilePageServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user requests the /profilepage URL. It simply forwards the request to
+   * This function fires when a user requests the /profilepage URL. It instantiates the user's 
+   * UserProfile object, returns their profile data and forwards the request to
    * profilepage.jsp.
    */
+  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws IOException, ServletException { 
+    /* TODO 
+     * Retrieve UserProfile data
+     * Fill ProfilePage fields with retrieved data
+     */
     request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
   }
 
@@ -61,6 +67,9 @@ public class ProfilePageServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
-
+      /* TODO 
+       * Send AboutMe, and Interests data to UserProfile object
+       * Update UserProfileStore with new UserProfile object. 
+       */
     } 
 }
