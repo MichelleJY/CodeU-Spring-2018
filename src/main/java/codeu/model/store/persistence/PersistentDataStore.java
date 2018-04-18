@@ -15,6 +15,7 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.UserProfile;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStoreException;
@@ -25,8 +26,10 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -146,6 +149,40 @@ public class PersistentDataStore {
     return messages;
   }
 
+  /**
+   * Loads all UserProfile objects from the Datastore service and returns them in a Map.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public Map<UUID, UserProfile> loadUserProfiles() throws PersistentDataStoreException {
+
+    Map<UUID, UserProfile> userProfiles = new HashMap<>();
+
+    // Retrieve all user profiles from the datastore.
+    Query query = new Query("chat-users-profiles");
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+        String aboutMe = (String) entity.getProperty("aboutMe");
+        String profilePicture = (String) entity.getProperty("profilePicture");
+        Map<String, String> interests = (Map<String, String>) entity.getProperty("interests");
+        Instant creationTime = Instant.parse((String) entity.getProperty("last_time_online"));
+        UserProfile userProfile = new UserProfile(uuid, aboutMe, profilePicture, interests, creationTime);
+        userProfiles.put(uuid, userProfile);
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return userProfiles;
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     Entity userEntity = new Entity("chat-users");
@@ -154,6 +191,17 @@ public class PersistentDataStore {
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     datastore.put(userEntity);
+  }
+
+  /** Write a UserProfile object to the Datastore service. */
+  public void writeThrough(UserProfile userProfile) {
+    Entity userProfileEntity = new Entity("chat-users-profiles");
+    userProfileEntity.setProperty("uuid", userProfile.getId().toString());
+    userProfileEntity.setProperty("aboutMe", userProfile.getAboutMe());
+    userProfileEntity.setProperty("profilePicture", userProfile.getProfilePicture());
+    userProfileEntity.setProperty("interests", userProfile.getInterests());
+    userProfileEntity.setProperty("last_time_online", userProfile.getlastTimeOnline().toString());
+    datastore.put(userProfileEntity);
   }
 
   /** Write a Message object to the Datastore service. */

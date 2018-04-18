@@ -15,14 +15,17 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.UserProfile;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -54,6 +57,12 @@ public class DefaultDataStore {
    */
   private int DEFAULT_MESSAGE_COUNT = 100;
 
+  /**
+   * Default user profile count. Only used if USE_DEFAULT_DATA is true. Each message is assigned a random
+   * user ID and user profile.
+   */
+  private int DEFAULT_PROFILE_COUNT = 20;
+
   private static DefaultDataStore instance = new DefaultDataStore();
 
   public static DefaultDataStore getInstance() {
@@ -63,17 +72,20 @@ public class DefaultDataStore {
   private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
+  private Map<UUID, UserProfile> userProfiles;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
     users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
+    userProfiles = new HashMap<>();
 
     if (USE_DEFAULT_DATA) {
       addRandomUsers();
       addRandomConversations();
       addRandomMessages();
+      addRandomUserProfiles();
     }
   }
 
@@ -91,6 +103,10 @@ public class DefaultDataStore {
 
   public List<Message> getAllMessages() {
     return messages;
+  }
+
+  public Map<UUID, UserProfile> getAllUserProfiles() {
+    return userProfiles;
   }
 
   private void addRandomUsers() {
@@ -128,6 +144,24 @@ public class DefaultDataStore {
               UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
+    }
+  }
+
+  private void addRandomUserProfiles() {
+    List<String> pictureLocations = getRandomPictures();
+    List<String> categories = getRandomCategories();
+    List<String> subCategories = getRandomSubCategories();
+    for (int i = 0; i < DEFAULT_PROFILE_COUNT; i++) {
+      User author = getRandomElement(users);
+      String aboutMe = getRandomMessageContent();
+      String profilePicture = getRandomElement(pictureLocations);
+      Map<String, String> interests = getRandomInterests(categories, subCategories);
+
+      UserProfile userProfile =
+          new UserProfile(
+              author.getId(), aboutMe, profilePicture, interests, Instant.now());
+      PersistentStorageAgent.getInstance().writeThrough(userProfile);
+      userProfiles.put(author.getId(), userProfile);
     }
   }
 
@@ -184,5 +218,62 @@ public class DefaultDataStore {
     String messageContent = loremIpsum.substring(startIndex, endIndex).trim();
 
     return messageContent;
+  }
+
+  private List<String> getRandomPictures() {
+    List<String> pictureLocations = new ArrayList<>();
+    String path = "../../resources/images/";
+    pictureLocations.add(path + "codeguy.png");
+    pictureLocations.add(path + "Determination.png");
+    pictureLocations.add(path + "happy_man.jpg");
+    pictureLocations.add(path + "scenery.jpg");
+    pictureLocations.add(path + "sunhat.png");
+    pictureLocations.add(path + "surprised.png");
+    pictureLocations.add(path + "thumbsup.jpg");
+
+    return pictureLocations;
+  }
+
+  private List<String> getRandomCategories() {
+    List<String> randomCategories = new ArrayList<>();
+    randomCategories.add("Sports");
+    randomCategories.add("Art");
+    randomCategories.add("Reading");
+    randomCategories.add("Games");
+    randomCategories.add("Movies");
+    randomCategories.add("Travel");
+    randomCategories.add("Food");
+    randomCategories.add("Animals");
+    randomCategories.add("Cars");
+    randomCategories.add("Clothes");
+
+    return randomCategories;
+  }
+
+  private List<String> getRandomSubCategories() {
+    List<String> randomSubCategories = new ArrayList<>();
+    randomSubCategories.add("Snowboarding, Biking, Soccer");
+    randomSubCategories.add("Cell-Shading, Chalk Writing, Painting");
+    randomSubCategories.add("Artemis Fowl, Ready Player One, Catch Me If You Can");
+    randomSubCategories.add("Zero Time Escape, FarCry 5, Persona 5");
+    randomSubCategories.add("A Quiet Place, Deadpool 2, Avengers");
+    randomSubCategories.add("France, Thailand, Hawaii");
+    randomSubCategories.add("Arraz Con Pollo, Spinach Alfredo, Waffles");
+    randomSubCategories.add("Cats, Dogs, Turtles");
+    randomSubCategories.add("Toyota Camry, Tesla 3, Hyundai Sonata");
+    randomSubCategories.add("Levi, Rikans, American Eagle");
+
+    return randomSubCategories;
+  }
+
+  private Map<String, String> getRandomInterests(List<String> categories, List<String> subCategories) {
+    Map<String, String> interests = new HashMap<String, String>();
+
+    int tempIndex;
+    for (int i = 0; i < 5; i++) {
+      tempIndex = (int) (Math.random() * categories.size());
+      interests.put(categories.get(tempIndex), subCategories.get(tempIndex));
+    }
+    return interests;
   }
 }
