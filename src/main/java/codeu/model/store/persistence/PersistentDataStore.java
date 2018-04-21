@@ -21,6 +21,7 @@ import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.EmbeddedEntity;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -168,7 +169,11 @@ public class PersistentDataStore {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String aboutMe = (String) entity.getProperty("aboutMe");
         String profilePicture = (String) entity.getProperty("profilePicture");
-        Map<String, String> interests = (Map<String, String>) entity.getProperty("interests");
+        Map<String, String> interests = new HashMap<>();
+        EmbeddedEntity interestsEntity = (EmbeddedEntity) entity.getProperty("interests");
+        for (String key : interestsEntity.getProperties().keySet()) {
+          interests.put(key, (String) interestsEntity.getProperty(key));
+        }
         Instant creationTime = Instant.parse((String) entity.getProperty("last_time_online"));
         UserProfile userProfile = new UserProfile(uuid, aboutMe, profilePicture, interests, creationTime);
         userProfiles.put(uuid, userProfile);
@@ -199,7 +204,12 @@ public class PersistentDataStore {
     userProfileEntity.setProperty("uuid", userProfile.getId().toString());
     userProfileEntity.setProperty("aboutMe", userProfile.getAboutMe());
     userProfileEntity.setProperty("profilePicture", userProfile.getProfilePicture());
-    userProfileEntity.setProperty("interests", userProfile.getInterests());
+    EmbeddedEntity interestsEntity = new EmbeddedEntity();
+    Map<String, String> interests = userProfile.getInterests();
+    for (String key : interests.keySet()) {
+      interestsEntity.setProperty(key, interests.get(key));
+    }
+    userProfileEntity.setProperty("interests", interestsEntity);
     userProfileEntity.setProperty("last_time_online", userProfile.getlastTimeOnline().toString());
     datastore.put(userProfileEntity);
   }
