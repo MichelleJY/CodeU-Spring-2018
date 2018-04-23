@@ -26,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the conversations page. */
 public class ActivityFeedServlet extends HttpServlet {
@@ -71,6 +72,8 @@ public class ActivityFeedServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     List<Conversation> conversations = conversationStore.getAllConversations();
+    List<User> users = userStore.getAllUsers();
+    request.setAttribute("user",users);
     request.setAttribute("conversations", conversations);
     request.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp").forward(request, response);
   }
