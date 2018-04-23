@@ -72,8 +72,6 @@ public class ActivityFeedServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     List<Conversation> conversations = conversationStore.getAllConversations();
-    List<User> users = userStore.getAllUsers();
-    request.setAttribute("user",users);
     request.setAttribute("conversations", conversations);
     request.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp").forward(request, response);
   }

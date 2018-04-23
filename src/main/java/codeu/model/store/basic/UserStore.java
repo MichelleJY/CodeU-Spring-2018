@@ -98,11 +98,6 @@ public class UserStore {
     return null;
   }
 
-  /** Access the current set of users known to the application. */
-  public List<User> getAllUsers() {
-    return users;
-  }
-
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
     users.add(user);
