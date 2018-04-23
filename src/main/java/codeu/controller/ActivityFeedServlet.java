@@ -72,7 +72,9 @@ public class ActivityFeedServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     List<Conversation> conversations = conversationStore.getAllConversations();
+    List<User> users = userStore.getAllUsers();
     request.setAttribute("conversations", conversations);
+    request.setAttribute("user",users);
     request.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp").forward(request, response);
   }
 
