@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import codeu.model.data.User;
+import codeu.model.data.UserProfile;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.UserProfileStore;
 import java.util.UUID;
 import java.time.Instant;
 import org.mindrot.jbcrypt.BCrypt;
@@ -21,6 +23,7 @@ public class RegisterServlet extends HttpServlet {
    * Store class that gives access to Users.
    */
   private UserStore userStore;
+  private UserProfileStore profileStore;
 
   /**
    * Set up state for handling registration-related requests. This method is only called when
@@ -30,6 +33,7 @@ public class RegisterServlet extends HttpServlet {
   public void init() throws ServletException {
     super.init();
     setUserStore(UserStore.getInstance());
+    setUserProfileStore(UserProfileStore.getInstance());
   }
 
   /**
@@ -40,6 +44,14 @@ public class RegisterServlet extends HttpServlet {
     this.userStore = userStore;
   }
 
+  /**
+   * Sets the UserProfileStore used by this servlet. This function provides a common setup method
+   * for use by the test framework or the servlet's init() function.
+   */
+
+  void setUserProfileStore(UserProfileStore profileStore) {
+    this.profileStore = profileStore;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -70,8 +82,14 @@ public class RegisterServlet extends HttpServlet {
     response.getWriter().println("<p>Username: " + username + "</p>");
     response.getWriter().println("<p>Password: " + password + "</p>");
 
-    User user = new User(UUID.randomUUID(), username, BCrypt.hashpw(password, BCrypt.gensalt()), Instant.now());
+    UUID id = UUID.randomUUID();
+    Instant current = Instant.now();
+
+    User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), current);
     userStore.addUser(user);
+
+    UserProfile profile = new UserProfile(id, "No about me yet", "https://i.imgur.com/z4amwTY.png", null, current);
+    profileStore.addUserProfile(profile); 
 
     response.sendRedirect("/login");
   }
