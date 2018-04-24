@@ -76,3 +76,4 @@ public class ActivityFeedServletTest {
     Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+}
