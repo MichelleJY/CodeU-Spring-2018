@@ -36,7 +36,7 @@ import org.mockito.Mockito;
 
 public class ActivityFeedServletTest {
 
-  private ActivityFeedServletTest activityFeedServlet;
+  private ActivityFeedServlet activityFeedServlet;
   private HttpServletRequest mockRequest;
   private HttpSession mockSession;
   private HttpServletResponse mockResponse;
@@ -56,23 +56,12 @@ public class ActivityFeedServletTest {
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp"))
         .thenReturn(mockRequestDispatcher);
-
-    mockConversationStore = Mockito.mock(ConversationStore.class);
-    activityFeedServlet.setConversationStore(mockConversationStore);
-
-    mockUserStore = Mockito.mock(UserStore.class);
-    activityFeedServlet.setUserStore(mockUserStore);
   }
 
   @Test
   public void testDoGet() throws IOException, ServletException {
     List<Conversation> fakeConversationList = new ArrayList<>();
-    fakeConversationList.add(
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
-    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
-
     activityFeedServlet.doGet(mockRequest, mockResponse);
-
     Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
