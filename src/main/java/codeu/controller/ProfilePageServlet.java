@@ -7,6 +7,7 @@ import codeu.model.store.basic.UserProfileStore;
 import java.time.Instant;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -76,28 +77,32 @@ public class ProfilePageServlet extends HttpServlet {
        * Update UserProfileStore with new UserProfile object. 
        */
       String username = (String) request.getSession().getAttribute("user");
-      if (userStore.isUserRegistered(username)) {
-        User user = userStore.getUser(username);
-        UserProfile userProfile = null;
-        String aboutMe = request.getParameter("aboutMe");
-        String profilePicture = request.getParameter("profilepicture");
-        String category = request.getParameter("myFavorites");
-        String subCategory = request.getParameter("subcategory");
-
-        if (userProfileStore.isUserProfileCreated(user.getId())) {
-          userProfile = userProfileStore.getUserProfile(user.getId());
-          userProfile.setLastTimeOnline(Instant.now());
-        }
-        else {
-          userProfile = new UserProfile(user.getId(), "", "", new HashMap<String, String>(), Instant.now());
-        }
-
-        userProfile.setAboutMe(aboutMe);
-        userProfile.setProfilePicture(profilePicture);
-        userProfile.addInterest(category, subCategory);
-
-        userProfileStore.addUserProfile(userProfile);
+      if (!userStore.isUserRegistered(username)) {
+        request.setAttribute("error", "User is not registered");
         request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
+        return;
       }
+      User user = userStore.getUser(username);
+      UUID userId = userStore.getUser(username).getId();
+      UserProfile userProfile = null;
+      String aboutMe = request.getParameter("aboutMe");
+      String profilePicture = request.getParameter("profilePicture");
+      String category = request.getParameter("myFavorites");
+      String subCategory = request.getParameter("subcategory");
+
+      if (userProfileStore.isUserProfileCreated(userId)) {
+        userProfile = userProfileStore.getUserProfile(userId);
+        userProfile.setLastTimeOnline(Instant.now());
+      }
+      else {
+        userProfile = new UserProfile(userId, "", "", new HashMap<String, String>(), Instant.now());
+      }
+
+      userProfile.setAboutMe(aboutMe);
+      userProfile.setProfilePicture(profilePicture);
+      userProfile.addInterest(category, subCategory);
+
+      userProfileStore.addUserProfile(userProfile);
+      request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
     } 
 }
