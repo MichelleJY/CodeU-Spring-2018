@@ -60,9 +60,7 @@ public class ActivityFeedServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
-    List<Conversation> fakeConversationList = new ArrayList<>();
     activityFeedServlet.doGet(mockRequest, mockResponse);
-    Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 }
