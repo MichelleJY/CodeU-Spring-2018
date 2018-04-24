@@ -58,7 +58,7 @@ public class UserProfile {
         return this.interests;
     }
 
-    public Instant getlastTimeOnline() {
+    public Instant getLastTimeOnline() {
         return this.lastTimeOnline;
     }
     

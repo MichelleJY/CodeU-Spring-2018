@@ -75,8 +75,7 @@ public class UserProfileStore {
    * @return null if UUID does not match any existing UserProfile.
    */
   public UserProfile getUserProfile(UUID UUID) {
-    if (userProfiles.containsKey(UUID)) return userProfiles.get(UUID);
-    return null;
+    return userProfiles.get(UUID);
   }
 
 

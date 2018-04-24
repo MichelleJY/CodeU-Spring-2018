@@ -210,7 +210,7 @@ public class PersistentDataStore {
       interestsEntity.setProperty(key, interests.get(key));
     }
     userProfileEntity.setProperty("interests", interestsEntity);
-    userProfileEntity.setProperty("last_time_online", userProfile.getlastTimeOnline().toString());
+    userProfileEntity.setProperty("last_time_online", userProfile.getLastTimeOnline().toString());
     datastore.put(userProfileEntity);
   }
 
