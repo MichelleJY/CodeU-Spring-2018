@@ -3,6 +3,8 @@ package codeu.controller;
 import codeu.model.data.User;
 import codeu.model.data.UserProfile;
 import codeu.model.store.basic.UserStore;
+import codeu.model.data.UserProfile;
+import codeu.model.data.User;
 import codeu.model.store.basic.UserProfileStore;
 import java.time.Instant;
 import java.io.IOException;
@@ -12,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
+import java.util.Map;
+
 
 /**
  * Servlet class responsible for User Profile pages.
@@ -58,10 +63,33 @@ public class ProfilePageServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws IOException, ServletException { 
-    /* TODO 
-     * Retrieve UserProfile data
-     * Fill ProfilePage fields with retrieved data
-     */
+
+    String username = (String)request.getSession().getAttribute("user"); 
+    if(username == null){
+      response.sendRedirect("/profilepage");
+      return;
+    }
+
+    User user= userStore.getUser(username);
+
+    if(user == null){
+      System.out.println("User not found: " + username);
+      response.sendRedirect("/profilepage");
+      return;
+    }
+
+    UUID id = user.getId();
+    UserProfile profile = userProfileStore.getUserProfile(id); //
+
+    Map<String, String> interests = profile.getInterests();
+    request.setAttribute("interests", interests);
+
+    String aboutMe = profile.getAboutMe();
+    request.setAttribute("aboutMe", aboutMe);
+
+    String profilePic = profile.getProfilePicture();
+    request.setAttribute("profilePic", profilePic);
+
     request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
   }
 

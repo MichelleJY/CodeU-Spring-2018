@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.UserProfileStore;
 import org.mindrot.jbcrypt.BCrypt;
 
 
@@ -26,6 +27,7 @@ public class RegisterServletTest {
   private RequestDispatcher mockRequestDispatcher;
   private UserStore mockUserStore;
   private HttpSession mockSession;
+  private UserProfileStore mockUserProfileStore;
   @Before
   public void setup() {
     registerServlet = new RegisterServlet();
@@ -33,6 +35,7 @@ public class RegisterServletTest {
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
     mockUserStore = Mockito.mock(UserStore.class);
+    mockUserProfileStore = Mockito.mock(UserProfileStore.class);
     mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp")).thenReturn(mockRequestDispatcher);
   }
@@ -65,10 +68,11 @@ public class RegisterServletTest {
 
     Mockito.when(mockUserStore.isUserRegistered("Testertest")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
+    registerServlet.setUserProfileStore(mockUserProfileStore);
 
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
-    registerServlet.doPost(mockRequest, mockResponse);
+    registerServlet.doPost(mockRequest, mockResponse); 
 
     Mockito.verify(mockPrintWriter).println("<p>Username: Testertest</p>");
     Mockito.verify(mockPrintWriter).println("<p>Password: password</p>");
@@ -94,6 +98,7 @@ public class RegisterServletTest {
 
     Mockito.when(mockUserStore.isUserRegistered("Testertest")).thenReturn(true);
     registerServlet.setUserStore(mockUserStore);
+    registerServlet.setUserProfileStore(mockUserProfileStore);
     
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
