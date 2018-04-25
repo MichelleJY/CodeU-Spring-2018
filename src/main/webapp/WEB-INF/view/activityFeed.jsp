@@ -13,8 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.*" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%--<%@ page import="codeu.model.store.UserStore" %>--%>
+
 <%@ page import="codeu.model.data.User" %>
 
 
@@ -38,16 +40,19 @@
       <%
       List<Conversation> conversations =
         (List<Conversation>) request.getAttribute("conversations");
+      ArrayList<String> displayNames = (ArrayList<String>) request.getAttribute("displayNames");
       if(conversations != null && !conversations.isEmpty()){
       %>
         <ul class="mdl-list">
+        <% int i = 0; %>
         <%
           for(Conversation conversation : conversations){
         %>
-          <li>A new conversation was created: <a href="/chat/<%= conversation.getTitle() %>">  
+          <li> <%= displayNames.get(i)%> created a new conversation: <a href="/chat/<%= conversation.getTitle() %>">  
           <%= conversation.getTitle() %></a> </li>
+          <%i++;%>
         <%
-          } 
+          } //closes for loop
         %>
         </ul>
       <%

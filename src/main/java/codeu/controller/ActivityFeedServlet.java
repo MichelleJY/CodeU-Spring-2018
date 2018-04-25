@@ -20,7 +20,7 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
+import java.util.*;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -71,7 +71,13 @@ public class ActivityFeedServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     List<Conversation> conversations = conversationStore.getAllConversations();
+    ArrayList<String> displayNames = new ArrayList<String>();
     request.setAttribute("conversations", conversations);
+    request.setAttribute("displayNames", displayNames);
+    for(Conversation conversation : conversations){
+      String displayName = userStore.getUser(conversation.getOwnerId()).getName();
+      displayNames.add(displayName);
+    }
     request.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp").forward(request, response);
   }
 
