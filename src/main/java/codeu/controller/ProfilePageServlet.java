@@ -72,10 +72,7 @@ public class ProfilePageServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
-      /* TODO 
-       * Send AboutMe, and Interests data to UserProfile object
-       * Update UserProfileStore with new UserProfile object. 
-       */
+      
       String username = (String) request.getSession().getAttribute("user");
       if (!userStore.isUserRegistered(username)) {
         request.setAttribute("error", "User is not registered");
