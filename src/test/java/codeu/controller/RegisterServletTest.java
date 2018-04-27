@@ -14,9 +14,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import codeu.model.data.User;
+import codeu.model.data.UserProfile;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.UserProfileStore;
 import org.mindrot.jbcrypt.BCrypt;
+import java.util.UUID;
 
 
 public class RegisterServletTest {
@@ -83,6 +85,13 @@ public class RegisterServletTest {
     User storedUser = userArgumentCaptor.getValue();
     Assert.assertEquals(storedUser.getName(), "Testertest");
 
+    UUID userId = storedUser.getId();
+
+    ArgumentCaptor<UserProfile> profUserArgumentCaptor = ArgumentCaptor.forClass(UserProfile.class);
+
+    Mockito.verify(mockUserProfileStore).addUserProfile(profUserArgumentCaptor.capture()); 
+    UserProfile storedUserProfile = profUserArgumentCaptor.getValue();
+    Assert.assertEquals(storedUserProfile.getId(), userId);
     //BCrypt.checkpw() checks that the second param is correctly hashed  
     Assert.assertTrue(BCrypt.checkpw("password", storedUser.getPassword()));  
     //checks that stored password is hashed and not plain text 

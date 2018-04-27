@@ -40,12 +40,13 @@ public class ProfilePageServletTest {
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/profilepage.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/login.jsp")).thenReturn(mockRequestDispatcher);
     mockUserStore = Mockito.mock(UserStore.class);
     mockProfileStore = Mockito.mock(UserProfileStore.class);
   }
 
   @Test
-  public void testDoGet() throws IOException, ServletException {
+  public void testDoGet_UserExists() throws IOException, ServletException {
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
     profilePageServlet.setUserStore(mockUserStore);
     profilePageServlet.setUserProfileStore(mockProfileStore);
@@ -67,5 +68,35 @@ public class ProfilePageServletTest {
     Mockito.verify(mockRequest).setAttribute("profilePic", "picture_url");
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
+  public void testDoGet_UserNotLoggedIn() throws IOException, ServletException{
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    
+    Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
+
+    profilePageServlet.doGet(mockRequest, mockResponse);
+
+    Mockito.verifyZeroInteractions(mockResponse);
+    Mockito.verify(mockRequest).setAttribute("error", "That username doesn't exist");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+
+  }
+
+   @Test
+  public void testDoGet_UserDoesntExist() throws IOException, ServletException{
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    profilePageServlet.setUserStore(mockUserStore);
+
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(null); 
+
+    profilePageServlet.doGet(mockRequest, mockResponse);
+
+    Mockito.verifyZeroInteractions(mockResponse);
+    Mockito.verify(mockRequest).setAttribute("error", "Username not found");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+
   }
 }

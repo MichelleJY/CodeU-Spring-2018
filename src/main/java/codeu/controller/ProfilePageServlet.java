@@ -61,15 +61,16 @@ public class ProfilePageServlet extends HttpServlet {
 
     String username = (String)request.getSession().getAttribute("user"); 
     if(username == null){
-      response.sendRedirect("/profilepage");
+      request.setAttribute("error", "That username doesn't exist");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
     }
 
     User user= userStore.getUser(username);
 
     if(user == null){
-      System.out.println("User not found: " + username);
-      response.sendRedirect("/profilepage");
+      request.setAttribute("error", "Username not found");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
     }
 
