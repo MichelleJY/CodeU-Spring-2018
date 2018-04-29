@@ -1,4 +1,5 @@
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="java.util.HashMap" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,12 +16,25 @@
         <% } %>
         Profile Page</h1>
 
-        <form action="/profilepage">
-            <input type="submit" value="Update Profile">
+        <form action="/profilepage" method="POST">
+            <img name="profilePicture" id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
             <br/>
-                <img name="profilePicture" id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
-            <br/><br/>
-
+            
+            <input type="submit" value="Update Profile">
+            <input name="resetProfile" id="resetCheck" type="checkbox">
+            <label for="resetCheck">Reset Profile?</label>
+            <br/>
+            <h2>
+                Last time online: 
+                <%
+                    if (request.getSession().getAttribute("lastTimeOnline") != null) {
+                        out.print(request.getSession().getAttribute("lastTimeOnline"));
+                    }
+                    else {
+                        out.print("unknown");
+                    }
+                %>
+            </h2>
             <select name="myFavorites" id="selector">
                     <option value="Books">Book</option>
                     <option value="Food">Food</option>
@@ -36,13 +50,24 @@
             <h2>Interests</h2>
             <div id="interestBlock">
                 Interests will go in here/be updated in here
+                <%
+                if (request.getSession().getAttribute("interests") != null) {
+                    HashMap<String, String> interests = (HashMap<String,String>) request.getSession().getAttribute("interests");
+                    for (String interest : interests.keySet()) {
+                        out.print(interest + ": " + interests.get(interest) + "<br/>");
+                    }
+                }
+                %>
             </div>
             </center>
     </div>
     <div id="midContainer">
-        
             <h1>About Me</h1>
-            <textarea name="aboutMe" id="aboutMe" rows='10' cols='90'></textarea>
+            <textarea name="aboutMe" id="aboutMe" rows='10' cols='90'><% 
+                if(request.getSession().getAttribute("aboutMe") != null) { 
+                    out.print(request.getSession().getAttribute("aboutMe"));
+                } 
+                %></textarea>
             <br/>
         </form>
 
