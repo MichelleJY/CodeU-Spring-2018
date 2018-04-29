@@ -3,8 +3,6 @@ package codeu.controller;
 import codeu.model.data.User;
 import codeu.model.data.UserProfile;
 import codeu.model.store.basic.UserStore;
-import codeu.model.data.UserProfile;
-import codeu.model.data.User;
 import codeu.model.store.basic.UserProfileStore;
 import java.time.Instant;
 import java.io.IOException;
@@ -14,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 import java.util.Map;
 
 
@@ -66,29 +63,39 @@ public class ProfilePageServlet extends HttpServlet {
 
     String username = (String)request.getSession().getAttribute("user"); 
     if(username == null){
-      response.sendRedirect("/profilepage");
+      request.setAttribute("error", "That username doesn't exist");
+      response.sendRedirect("/login");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
     }
 
     User user= userStore.getUser(username);
 
     if(user == null){
-      System.out.println("User not found: " + username);
-      response.sendRedirect("/profilepage");
+      request.setAttribute("error", "Username not found");
+      response.sendRedirect("/login");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
     }
 
     UUID id = user.getId();
-    UserProfile profile = userProfileStore.getUserProfile(id); //
+    if (userProfileStore.isUserProfileCreated(id)) {
+      UserProfile profile = userProfileStore.getUserProfile(id);
 
-    Map<String, String> interests = profile.getInterests();
-    request.setAttribute("interests", interests);
+      Map<String, String> interests = profile.getInterests();
+      request.getSession().setAttribute("interests", interests);
 
-    String aboutMe = profile.getAboutMe();
-    request.setAttribute("aboutMe", aboutMe);
+      String aboutMe = profile.getAboutMe();
+      request.getSession().setAttribute("aboutMe", aboutMe);
 
-    String profilePic = profile.getProfilePicture();
-    request.setAttribute("profilePic", profilePic);
+      String profilePic = profile.getProfilePicture();
+      request.getSession().setAttribute("profilePic", profilePic);
+
+      request.getSession().setAttribute("lastTimeOnline", profile.getLastTimeOnline());
+    }
+    else {
+      request.setAttribute("error", "User does not have a profile saved yet");
+    }
 
     request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
   }
@@ -104,30 +111,33 @@ public class ProfilePageServlet extends HttpServlet {
       String username = (String) request.getSession().getAttribute("user");
       if (!userStore.isUserRegistered(username)) {
         request.setAttribute("error", "User is not registered");
+        response.sendRedirect("/register");
         request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
         return;
       }
-      User user = userStore.getUser(username);
       UUID userId = userStore.getUser(username).getId();
       UserProfile userProfile = null;
+      String resetProfile = request.getParameter("resetProfile");
+      
+      if (userProfileStore.isUserProfileCreated(userId) && resetProfile == null) {
+        userProfile = userProfileStore.getUserProfile(userId);
+      }
+      else {
+        userProfile = new UserProfile(userId, "", "", new HashMap<String, String>(), null);
+      }
+
       String aboutMe = request.getParameter("aboutMe");
       String profilePicture = request.getParameter("profilePicture");
       String category = request.getParameter("myFavorites");
       String subCategory = request.getParameter("subcategory");
 
-      if (userProfileStore.isUserProfileCreated(userId)) {
-        userProfile = userProfileStore.getUserProfile(userId);
-        userProfile.setLastTimeOnline(Instant.now());
-      }
-      else {
-        userProfile = new UserProfile(userId, "", "", new HashMap<String, String>(), Instant.now());
-      }
-
+      userProfile.setLastTimeOnline(Instant.now());
       userProfile.setAboutMe(aboutMe);
       userProfile.setProfilePicture(profilePicture);
       userProfile.addInterest(category, subCategory);
 
       userProfileStore.addUserProfile(userProfile);
+      response.sendRedirect("/profilepage");
       request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
     } 
 }
