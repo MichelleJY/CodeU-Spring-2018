@@ -9,6 +9,7 @@ import codeu.model.data.User;
 import codeu.model.data.UserProfile;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.UserProfileStore;
+import java.util.HashMap;
 import java.util.UUID;
 import java.time.Instant;
 import org.mindrot.jbcrypt.BCrypt;
@@ -88,7 +89,9 @@ public class RegisterServlet extends HttpServlet {
     User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), current);
     userStore.addUser(user);
 
-    UserProfile profile = new UserProfile(id, "No about me yet", "https://i.imgur.com/z4amwTY.png", null, current);
+    HashMap<String, String> interests = new HashMap<>();
+
+    UserProfile profile = new UserProfile(id, "No about me yet", "https://i.imgur.com/z4amwTY.png", interests, current);
     profileStore.addUserProfile(profile); 
 
     response.sendRedirect("/login");
