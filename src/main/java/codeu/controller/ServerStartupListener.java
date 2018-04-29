@@ -1,14 +1,18 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.UserProfile;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.UserProfileStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.List;
+import java.util.UUID;
+import java.util.Map;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -31,6 +35,9 @@ public class ServerStartupListener implements ServletContextListener {
       List<Message> messages = PersistentStorageAgent.getInstance().loadMessages();
       MessageStore.getInstance().setMessages(messages);
 
+      Map<UUID, UserProfile> userProfiles = PersistentStorageAgent.getInstance().loadUserProfiles();
+      UserProfileStore.getInstance().setUserProfiles(userProfiles);
+      
     } catch (PersistentDataStoreException e) {
       System.err.println("Server didn't start correctly. An error occurred during Datastore load!");
       System.err.println("This is usually caused by loading data that's in an invalid format.");
