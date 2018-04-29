@@ -15,6 +15,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.UserProfile;
+import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.HashMap;
 import java.util.UUID;

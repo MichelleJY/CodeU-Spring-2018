@@ -176,6 +176,7 @@ public class PersistentDataStore {
         }
         Instant creationTime = Instant.parse((String) entity.getProperty("last_time_online"));
         UserProfile userProfile = new UserProfile(uuid, aboutMe, profilePicture, interests, creationTime);
+        userProfile.setEntityKey(entity.getKey());
         userProfiles.put(uuid, userProfile);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -188,6 +189,60 @@ public class PersistentDataStore {
     return userProfiles;
   }
 
+  /**
+   * Delete all UserProfile objects with the given uuid from the Datastore service. The returned list may be empty.
+   * 
+   * @param uuid The UUID of the User Profile objects to be deleted.
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public void deleteUserProfiles() throws PersistentDataStoreException {
+    
+    // Retrieve all user profiles from the datastore.
+    Query query = new Query("chat-users-profiles");
+    PreparedQuery results = datastore.prepare(query);
+    
+    for (Entity entity : results.asIterable()) {
+      try {
+        datastore.delete(entity.getKey());
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+  }
+
+  /**
+   * Delete all UserProfile objects with the given uuid from the Datastore service. The returned list may be empty.
+   * 
+   * @param uuid The UUID of the User Profile objects to be deleted.
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public void deleteUserProfiles(UUID uuid) throws PersistentDataStoreException {
+    
+    // Retrieve all user profiles from the datastore.
+    Query query = new Query("chat-users-profiles");
+    PreparedQuery results = datastore.prepare(query);
+    
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID profileId = UUID.fromString((String) entity.getProperty("uuid"));
+        if (profileId == uuid) {
+          datastore.delete(entity.getKey());
+        }
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+  }
+
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     Entity userEntity = new Entity("chat-users");
@@ -198,9 +253,20 @@ public class PersistentDataStore {
     datastore.put(userEntity);
   }
 
-  /** Write a UserProfile object to the Datastore service. */
+  /** Write a UserProfile object to the Datastore service. 
+   *  Deletes the existing UserProfile object from the Datastore if applicable.
+   */
   public void writeThrough(UserProfile userProfile) {
     Entity userProfileEntity = new Entity("chat-users-profiles");
+    try {
+      if (userProfile.getEntityKey() != null) {
+        Entity datastoreEntity = datastore.get(userProfile.getEntityKey());
+        userProfileEntity = datastoreEntity;
+      }
+    }
+    catch (Exception e) {
+      System.out.println(e);
+    }
     userProfileEntity.setProperty("uuid", userProfile.getId().toString());
     userProfileEntity.setProperty("aboutMe", userProfile.getAboutMe());
     userProfileEntity.setProperty("profilePicture", userProfile.getProfilePicture());
@@ -213,6 +279,7 @@ public class PersistentDataStore {
     userProfileEntity.setProperty("last_time_online", userProfile.getLastTimeOnline().toString());
     datastore.put(userProfileEntity);
   }
+
 
   /** Write a Message object to the Datastore service. */
   public void writeThrough(Message message) {
