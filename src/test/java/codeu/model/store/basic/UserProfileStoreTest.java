@@ -81,6 +81,6 @@ public class UserProfileStoreTest {
     Assert.assertEquals(expectedUserProfile.getAboutMe(), actualUserProfile.getAboutMe());
     Assert.assertEquals(expectedUserProfile.getProfilePicture(), actualUserProfile.getProfilePicture());
     Assert.assertEquals(expectedUserProfile.getInterests(), actualUserProfile.getInterests());
-    Assert.assertEquals(expectedUserProfile.getlastTimeOnline(), expectedUserProfile.getlastTimeOnline());
+    Assert.assertEquals(expectedUserProfile.getLastTimeOnline(), expectedUserProfile.getLastTimeOnline());
   }
 }

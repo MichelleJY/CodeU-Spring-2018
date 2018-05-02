@@ -1,12 +1,19 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.data.UserProfile;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.UserProfileStore;
+import java.time.Instant;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
 
 /**
  * Servlet class responsible for User Profile pages.
@@ -30,7 +37,7 @@ public class ProfilePageServlet extends HttpServlet {
 
   /**
    * Sets the UserStore used by this servlet. This function provides a common setup method for use
-   * by the test framework or the servlet's init() function.
+   * by the test framework or the servlet's init() function.  
    */
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
@@ -53,10 +60,43 @@ public class ProfilePageServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws IOException, ServletException { 
-    /* TODO 
-     * Retrieve UserProfile data
-     * Fill ProfilePage fields with retrieved data
-     */
+
+    String username = (String)request.getSession().getAttribute("user"); 
+    if(username == null){
+      request.setAttribute("error", "That username doesn't exist");
+      response.sendRedirect("/login");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
+
+    User user= userStore.getUser(username);
+
+    if(user == null){
+      request.setAttribute("error", "Username not found");
+      response.sendRedirect("/login");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
+
+    UUID id = user.getId();
+    if (userProfileStore.isUserProfileCreated(id)) {
+      UserProfile profile = userProfileStore.getUserProfile(id);
+
+      Map<String, String> interests = profile.getInterests();
+      request.getSession().setAttribute("interests", interests);
+
+      String aboutMe = profile.getAboutMe();
+      request.getSession().setAttribute("aboutMe", aboutMe);
+
+      String profilePic = profile.getProfilePicture();
+      request.getSession().setAttribute("profilePic", profilePic);
+
+      request.getSession().setAttribute("lastTimeOnline", profile.getLastTimeOnline());
+    }
+    else {
+      request.setAttribute("error", "User does not have a profile saved yet");
+    }
+
     request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
   }
 
@@ -67,9 +107,37 @@ public class ProfilePageServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
-      /* TODO 
-       * Send AboutMe, and Interests data to UserProfile object
-       * Update UserProfileStore with new UserProfile object. 
-       */
+      
+      String username = (String) request.getSession().getAttribute("user");
+      if (!userStore.isUserRegistered(username)) {
+        request.setAttribute("error", "User is not registered");
+        response.sendRedirect("/register");
+        request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
+        return;
+      }
+      UUID userId = userStore.getUser(username).getId();
+      UserProfile userProfile = null;
+      String resetProfile = request.getParameter("resetProfile");
+      
+      if (userProfileStore.isUserProfileCreated(userId) && resetProfile == null) {
+        userProfile = userProfileStore.getUserProfile(userId);
+      }
+      else {
+        userProfile = new UserProfile(userId, "", "", new HashMap<String, String>(), null);
+      }
+
+      String aboutMe = request.getParameter("aboutMe");
+      String profilePicture = request.getParameter("profilePicture");
+      String category = request.getParameter("myFavorites");
+      String subCategory = request.getParameter("subcategory");
+
+      userProfile.setLastTimeOnline(Instant.now());
+      userProfile.setAboutMe(aboutMe);
+      userProfile.setProfilePicture(profilePicture);
+      userProfile.addInterest(category, subCategory);
+
+      userProfileStore.addUserProfile(userProfile);
+      response.sendRedirect("/profilepage");
+      request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
     } 
 }
