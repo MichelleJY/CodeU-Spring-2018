@@ -96,7 +96,5 @@ public class RegisterServlet extends HttpServlet {
 
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/conversations");
-
-    //response.sendRedirect("/login");
   }
 }
