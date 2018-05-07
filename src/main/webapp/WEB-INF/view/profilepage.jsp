@@ -16,7 +16,7 @@
         <% } %>
         Profile Page</h1>
 
-        <form action="/profilepage" method="POST">
+        <form action="/profilepage/" method="POST">
             <img name="profilePicture" id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
             <br/>
             
