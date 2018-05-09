@@ -142,7 +142,7 @@ public class ProfilePageServlet extends HttpServlet {
       userProfile.addInterest(category, subCategory);
 
       userProfileStore.addUserProfile(userProfile);
-      response.sendRedirect("/profilepage");
+      response.sendRedirect("/profilepage/");
       request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
     } 
 }
