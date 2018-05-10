@@ -1,13 +1,16 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.UserProfile;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -144,5 +147,40 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(authorTwo, resultMessageTwo.getAuthorId());
     Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
+  }
+
+  public void testSaveAndLoadUserProfiles() throws PersistentDataStoreException {
+    UUID idOne = UUID.randomUUID();
+    Map<String, String> interestsOne = new HashMap<>();
+    interestsOne.put("test_interests_key_one", "test_interests_value_one");
+    Instant lastTimeOnlineOne = Instant.ofEpochMilli(1000);
+    UserProfile inputUserProfileOne = new UserProfile(idOne, "test_aboutMe_one", "test_profilePicture_one", interestsOne, lastTimeOnlineOne);
+
+    UUID idTwo = UUID.randomUUID();
+    Map<String, String> interestsTwo = new HashMap<>();
+    interestsTwo.put("test_interests_key_two", "test_interests_value_two");
+    Instant lastTimeOnlineTwo = Instant.ofEpochMilli(1000);
+    UserProfile inputUserProfileTwo = new UserProfile(idOne, "test_aboutMe_two", "test_profilePicture_two", interestsTwo, lastTimeOnlineTwo);
+    // save
+    persistentDataStore.writeThrough(inputUserProfileOne);
+    persistentDataStore.writeThrough(inputUserProfileTwo);
+
+    // load
+    Map<UUID, UserProfile> resultUsers = persistentDataStore.loadUserProfiles();
+
+    // confirm that what we saved matches what we loaded
+    UserProfile resultUserProfileOne = resultUsers.get(idOne);
+    Assert.assertEquals(idOne, resultUserProfileOne.getId());
+    Assert.assertEquals("test_aboutMe_one", resultUserProfileOne.getAboutMe());
+    Assert.assertEquals("test_profilePicture_one", resultUserProfileOne.getProfilePicture());
+    Assert.assertEquals(interestsOne, resultUserProfileOne.getInterests());
+    Assert.assertEquals(lastTimeOnlineOne, resultUserProfileOne.getLastTimeOnline());
+
+    UserProfile resultUserProfileTwo = resultUsers.get(idOne);
+    Assert.assertEquals(idTwo, resultUserProfileTwo.getId());
+    Assert.assertEquals("test_aboutMe_two", resultUserProfileTwo.getAboutMe());
+    Assert.assertEquals("test_profilePicture_two", resultUserProfileTwo.getProfilePicture());
+    Assert.assertEquals(interestsTwo, resultUserProfileTwo.getInterests());
+    Assert.assertEquals(lastTimeOnlineTwo, resultUserProfileTwo.getLastTimeOnline());
   }
 }

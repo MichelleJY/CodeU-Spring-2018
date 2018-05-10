@@ -1,0 +1,46 @@
+
+#midContainer {
+    position: absolute;
+    top: 15%;
+    left: 30%;
+    width: 700px;
+    margin: 0;
+}
+
+#leftContainer {
+    position: absolute;
+    top: 15%;
+    width: 400px;
+    left: 5%;
+    margin: 0;
+    
+    
+
+}
+
+#profilePicture {
+    border-radius: 20%;
+    width: 200px;
+  
+}
+
+form{
+    margin:0;
+    padding:0;
+    display:block;
+    }
+
+#interestBlock{
+    width: 200px;
+    border-style: solid;
+    border: 2px, black;
+}
+
+#selector{
+    width: 200px;
+    padding: 40px;
+    border: 2px, black;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+}
+
