@@ -1,0 +1,24 @@
+#profileName{
+
+	color:blue; 
+	display:inline;
+}
+
+#commonInterests{
+
+	display:none;
+
+
+
+}
+
+#profileName:hover + #commonInterests{
+
+	display:block;
+	z-index: 100;
+	position: absolute;
+	background-color: white;
+	border-style: solid;
+	border-size: .5px;
+	margin: 2px;
+}

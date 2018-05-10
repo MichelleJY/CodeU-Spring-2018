@@ -152,7 +152,7 @@ public class DefaultDataStore {
     List<String> categories = getRandomCategories();
     List<String> subCategories = getRandomSubCategories();
     for (int i = 0; i < DEFAULT_PROFILE_COUNT; i++) {
-      User author = getRandomElement(users);
+      User author = users.get(i); //
       String aboutMe = getRandomMessageContent();
       String profilePicture = getRandomElement(pictureLocations);
       Map<String, String> interests = getRandomInterests(categories, subCategories);
