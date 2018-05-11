@@ -63,6 +63,36 @@ public class ProfilePageServletTest {
     profilePageServlet.setUserStore(mockUserStore);
     profilePageServlet.setUserProfileStore(mockProfileStore);
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/profilepage/");
+
+    UUID fakeUUID = UUID.randomUUID();
+    Instant current = Instant.now();
+    Map<String,String> fakeInterests = new HashMap<String, String>();
+    fakeInterests.put("test_category", "test_interest");
+    User fakeUser = new User(fakeUUID, "test_username", "password", current);
+    UserProfile fakeprofile = new UserProfile(fakeUUID, "test_about", "picture_url", fakeInterests, current);
+
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    Mockito.when(mockProfileStore.isUserProfileCreated(fakeUUID)).thenReturn(true);
+
+    Mockito.when(mockProfileStore.getUserProfile(fakeUUID)).thenReturn(fakeprofile);
+
+    profilePageServlet.doGet(mockRequest, mockResponse); 
+    Mockito.verify(mockSession).setAttribute("interests", fakeInterests);
+    Mockito.verify(mockSession).setAttribute("aboutMe", "test_about");
+    Mockito.verify(mockSession).setAttribute("profilePic", "picture_url");
+    Mockito.verify(mockSession).setAttribute("lastTimeOnline", current);
+
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
+  public void testDoGet_ExternalUser() throws IOException, ServletException {
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    profilePageServlet.setUserStore(mockUserStore);
+    profilePageServlet.setUserProfileStore(mockProfileStore);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("");
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/profilepage/test_username");
 
     UUID fakeUUID = UUID.randomUUID();
     Instant current = Instant.now();
@@ -88,8 +118,8 @@ public class ProfilePageServletTest {
   @Test
   public void testDoGet_UserNotLoggedIn() throws IOException, ServletException{
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
-    
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/profilepage/");
 
     profilePageServlet.doGet(mockRequest, mockResponse);
 
@@ -103,9 +133,10 @@ public class ProfilePageServletTest {
   public void testDoGet_UserDoesntExist() throws IOException, ServletException{
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
     profilePageServlet.setUserStore(mockUserStore);
-
+    
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(null); 
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/profilepage/");
 
     profilePageServlet.doGet(mockRequest, mockResponse);
 
@@ -121,6 +152,7 @@ public class ProfilePageServletTest {
     profilePageServlet.setUserStore(mockUserStore);
 
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/profilepage/");
 
     UUID fakeUUID = UUID.randomUUID();
     Instant current = Instant.now();

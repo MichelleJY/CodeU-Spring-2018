@@ -62,6 +62,11 @@ public class ProfilePageServlet extends HttpServlet {
     throws IOException, ServletException { 
 
     String username = (String)request.getSession().getAttribute("user"); 
+    String requestUrl = request.getRequestURI();
+    String profileUsername = requestUrl.substring("/profilepage/".length());
+    if (profileUsername != null && profileUsername.length() > 0) {
+      username = profileUsername;
+    }
     if(username == null){
       request.setAttribute("error", "That username doesn't exist");
       response.sendRedirect("/login");
@@ -118,7 +123,7 @@ public class ProfilePageServlet extends HttpServlet {
       UUID userId = userStore.getUser(username).getId();
       UserProfile userProfile = null;
       String resetProfile = request.getParameter("resetProfile");
-      
+
       if (userProfileStore.isUserProfileCreated(userId) && resetProfile == null) {
         userProfile = userProfileStore.getUserProfile(userId);
       }
@@ -137,7 +142,7 @@ public class ProfilePageServlet extends HttpServlet {
       userProfile.addInterest(category, subCategory);
 
       userProfileStore.addUserProfile(userProfile);
-      response.sendRedirect("/profilepage");
+      response.sendRedirect("/profilepage/");
       request.getRequestDispatcher("/WEB-INF/view/profilepage.jsp").forward(request, response);
     } 
 }
