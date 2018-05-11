@@ -52,17 +52,12 @@
           <%= conversation.getTitle() %></a> </li>
           <%i++;%>
         <%
-          } //closes for loop
+          } 
         %>
         </ul>
       <%
       }
       %>
-      <script type="text/javascript">
-          setTimeout(function () { 
-              location.reload();
-          }, 60 * 1000);
-      </script>
     <% 
        } 
     %>

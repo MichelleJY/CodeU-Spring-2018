@@ -76,10 +76,10 @@ public class ActivityFeedServlet extends HttpServlet {
     request.setAttribute("conversations", conversations);
     request.setAttribute("displayNames", displayNames);
     for(Conversation conversation : conversations){
-      String displayName = userStore.getUser(conversation.getOwnerId()).getName();
+      User user = userStore.getUser(conversation.getOwnerId());
+      String displayName = user.getName();
       displayNames.add(displayName);
     }
     request.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp").forward(request, response);
   }
-
 }
