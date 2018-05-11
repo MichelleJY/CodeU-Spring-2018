@@ -94,6 +94,7 @@ public class RegisterServlet extends HttpServlet {
     UserProfile profile = new UserProfile(id, "No about me yet", "https://i.imgur.com/z4amwTY.png", interests, current);
     profileStore.addUserProfile(profile); 
 
-    response.sendRedirect("/login");
+    request.getSession().setAttribute("user", username);
+    response.sendRedirect("/conversations");
   }
 }

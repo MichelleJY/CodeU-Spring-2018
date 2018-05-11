@@ -92,7 +92,9 @@ public class RegisterServletTest {
     Assert.assertTrue(BCrypt.checkpw("password", storedUser.getPassword()));  
     //checks that stored password is hashed and not plain text 
     Assert.assertNotEquals("password", storedUser.getPassword());
-    Mockito.verify(mockResponse).sendRedirect("/login");
+    
+    Mockito.verify(mockSession).setAttribute("user", "Testertest");
+    Mockito.verify(mockResponse).sendRedirect("/conversations");
 
   }
 
