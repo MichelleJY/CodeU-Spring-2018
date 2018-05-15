@@ -15,10 +15,7 @@
 --%>
 <%@ page import="java.util.*" %>
 <%@ page import="codeu.model.data.Conversation" %>
-<%--<%@ page import="codeu.model.store.UserStore" %>--%>
-
 <%@ page import="codeu.model.data.User" %>
-
 
 <!DOCTYPE html>
 <html>
@@ -58,6 +55,11 @@
       <%
       }
       %>
+      <script type="text/javascript">
+          setTimeout(function(){
+              location = ''
+          },60000)
+      </script>
     <% 
        } 
     %>
