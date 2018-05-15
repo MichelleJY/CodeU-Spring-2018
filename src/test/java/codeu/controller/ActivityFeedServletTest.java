@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.Matchers;
 
 public class ActivityFeedServletTest {
 
@@ -59,18 +60,31 @@ public class ActivityFeedServletTest {
 
     mockConversationStore = Mockito.mock(ConversationStore.class);
     activityFeedServlet.setConversationStore(mockConversationStore);
-  }
+
+    mockUserStore = Mockito.mock(UserStore.class);
+    activityFeedServlet.setUserStore(mockUserStore);
+   
+  } 
 
   @Test
   public void testDoGet() throws IOException, ServletException {
     List<Conversation> fakeConversationList = new ArrayList<>();
+    UUID conversationOwnerUUID = UUID.randomUUID();
     fakeConversationList.add(
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
+        new Conversation(UUID.randomUUID(), conversationOwnerUUID, "test_conversation", Instant.now()));
     Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
+    
+    ArrayList<String> fakeDisplayNames = new ArrayList<String>();
+    String displayName = "fakeUser";
+    User fakeUser = new User(conversationOwnerUUID, displayName, "fakePW", Instant.now());
+    Mockito.when(mockUserStore.getUser(conversationOwnerUUID)).thenReturn(fakeUser);
+    fakeDisplayNames.add(displayName);
+
     
     activityFeedServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
+    Mockito.verify(mockRequest).setAttribute("displayNames", fakeDisplayNames);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 }
