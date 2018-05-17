@@ -21,7 +21,20 @@
         Profile Page</h1>
 
         <form action="/profilepage/" method="POST">
-            <img name="profilePicture" id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
+            <img id="profilePicture" src="<%=request.getSession().getAttribute("profilePic")%>">
+            <br/>
+             <select name="profilePicture" id="selector">
+                    <option value="/resources/images/profile-pictures/happy_man.jpg">Happy Man</option>
+                    <option value="/resources/images/profile-pictures/scenery.jpg">Scene</option>
+                    <option value="/resources/images/profile-pictures/thumbsup.jpg">Thumbs Up</option>
+                    <option value=/resources/images/profile-pictures/codeguy.png>Code Guy</option>
+                    <option value="/resources/images/profile-pictures/Determination.png">Determination</option>
+                    <option value="/resources/images/profile-pictures/cat.jpg">Kitties</option>
+                    <option value="/resources/images/profile-pictures/puppy.jpg">Puppy</option>
+                    <option value="/resources/images/profile-pictures/sunhat.png">Sun hat</option>
+                    <option value="/resources/images/profile-pictures/surprised.png">Surprised</option>
+                    <option value="/resources/images/profile-pictures/unicorn.jpeg">Unicorn</option>
+            </select>
             <br/>
              <h2>
                 Last time online: <br>
