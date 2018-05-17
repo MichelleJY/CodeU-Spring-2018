@@ -2,15 +2,16 @@
 #midContainer {
     position: absolute;
     top: 15%;
-    left: 30%;
+    left: 35%;
     width: 700px;
     margin: 0;
+    z-index: 100;
+
 }
 
 #leftContainer {
     position: absolute;
-    top: 15%;
-    width: 400px;
+    top: 10%;
     left: 5%;
     margin: 0;
     
@@ -31,7 +32,8 @@ form{
     }
 
 #interestBlock{
-    width: 200px;
+    width: 500px;
+    height: 200px;
     border-style: solid;
     border: 2px, black;
 }
