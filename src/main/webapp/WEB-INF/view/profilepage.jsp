@@ -1,5 +1,9 @@
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.time.Instant" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,23 +23,41 @@
         <form action="/profilepage/" method="POST">
             <img name="profilePicture" id="profilePicture" src="https://i.imgur.com/z4amwTY.png">
             <br/>
-            
-            <input type="submit" value="Update Profile">
-            <input name="resetProfile" id="resetCheck" type="checkbox">
-            <label for="resetCheck">Reset Profile?</label>
-            <br/>
-            <h2>
-                Last time online: 
+             <h2>
+                Last time online: <br>
                 <%
                     if (request.getSession().getAttribute("lastTimeOnline") != null) {
-                        out.print(request.getSession().getAttribute("lastTimeOnline"));
+                        
+                        Instant instant = (Instant)request.getSession().getAttribute("lastTimeOnline");
+                        Date date = Date.from(instant);
+
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy \n HH:mm:ss");
+                        String formattedDate = formatter.format(date);
+                        out.print(formattedDate);
                     }
                     else {
                         out.print("unknown");
                     }
                 %>
             </h2>
-            <select name="myFavorites" id="selector">
+            
+            <input type="submit" value="Update Profile">
+            <input name="resetProfile" id="resetCheck" type="checkbox">
+            <label for="resetCheck">Reset Profile?</label>
+            <br/>
+    </div>
+    <div id="midContainer">
+            <h1>About Me</h1>
+            <textarea name="aboutMe" id="aboutMe" rows='10' cols='75'><% 
+                if(request.getSession().getAttribute("aboutMe") != null) { 
+                    out.print(request.getSession().getAttribute("aboutMe"));
+                } 
+                %></textarea>
+            <br/>
+        </form>
+
+        <h1>Interests</h1>
+                <select name="myFavorites" id="selector">
                     <option value="Books">Book</option>
                     <option value="Food">Food</option>
                     <option value="Hobbies">Hobbies</option>
@@ -46,10 +68,9 @@
             </select>
             <br/>
             <input type="text" name="subcategory">
-            <br/>
-            <h2>Interests</h2>
-            <div id="interestBlock">
-                Interests will go in here/be updated in here
+            <br/><br/>
+        <div id="interestBlock">
+          
                 <%
                 if (request.getSession().getAttribute("interests") != null) {
                     HashMap<String, String> interests = (HashMap<String,String>) request.getSession().getAttribute("interests");
@@ -58,21 +79,7 @@
                     }
                 }
                 %>
-            </div>
-            </center>
-    </div>
-    <div id="midContainer">
-            <h1>About Me</h1>
-            <textarea name="aboutMe" id="aboutMe" rows='10' cols='90'><% 
-                if(request.getSession().getAttribute("aboutMe") != null) { 
-                    out.print(request.getSession().getAttribute("aboutMe"));
-                } 
-                %></textarea>
-            <br/>
-        </form>
-
-        <h1>Recent Activity</h1>
-        <textarea name="activity" id="activity" rows='20' cols='90'></textarea>
+        </div>
     </div>
 </body>
 </html>
