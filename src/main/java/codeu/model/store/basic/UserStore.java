@@ -114,11 +114,6 @@ public class UserStore {
     return false;
   }
 
-  /** Access the current set of users known to the application. */
-  public List<User> getAllUsers() {
-    return users;
-  }
-
   /**
    * Sets the List of Users stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
@@ -126,4 +121,10 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+
+    /** Access the current set of users known to the application. */
+  public List<User> getAllUsers() {
+    return users;
+  }
+
 }
