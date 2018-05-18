@@ -73,8 +73,10 @@ public class ActivityFeedServlet extends HttpServlet {
       throws IOException, ServletException {
     List<Conversation> conversations = conversationStore.getAllConversations();
     ArrayList<String> displayNames = new ArrayList<String>();
+    List<User> users = userStore.getAllUsers();
     request.setAttribute("conversations", conversations);
     request.setAttribute("displayNames", displayNames);
+    request.setAttribute("users",users);
     for(Conversation conversation : conversations){
       User user = userStore.getUser(conversation.getOwnerId());
       String displayName = user.getName();

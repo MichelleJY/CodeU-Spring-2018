@@ -35,12 +35,31 @@
     <% } %>
 
 <%-- IF USER IS LOGGED IN --%>
-    <% if(request.getSession().getAttribute("user") != null){ %> 
+    <% if(request.getSession().getAttribute("user") != null){ %>
       <h1>Activity Feed</h1>
       <%
       List<Conversation> conversations =
         (List<Conversation>) request.getAttribute("conversations");
       ArrayList<String> displayNames = (ArrayList<String>) request.getAttribute("displayNames");
+      List<User> users =
+        (List<User>) request.getAttribute("users");
+        %>
+        <%
+          if(users != null){
+        %>
+        <ul class="mdl-list">
+          <%
+            for(User user : users){
+          %>
+            <li> <%= user.getName()%> registered. </li>
+          <%
+            }
+          %>
+          </ul>
+        <%
+        }
+        %>
+        <%
       if(conversations != null && !conversations.isEmpty()){
       %>
         <ul class="mdl-list">
@@ -48,18 +67,18 @@
         <%
           for(Conversation conversation : conversations){
         %>
-          <li> <%= displayNames.get(i)%> created a new conversation: <a href="/chat/<%= conversation.getTitle() %>">  
+          <li> <%= displayNames.get(i)%> created a new conversation: <a href="/chat/<%= conversation.getTitle() %>">
           <%= conversation.getTitle() %></a> </li>
           <%i++;%>
         <%
-          } 
+          }
         %>
         </ul>
       <%
       }
       %>
-    <% 
-       } 
+    <%
+       }
     %>
     <hr/>
   </div>
