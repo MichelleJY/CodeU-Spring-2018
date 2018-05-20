@@ -45,6 +45,13 @@
                     <option value="TV Shows">Tv Shows</option>
             </select>
             <br/>
+            <select name="subcategory" id="selector">
+                <optgroup label="Books">
+                    <option value="GoblinSlayer">Goblin Slayer</option>
+                    <option value="GoT">Game Of Thrones</option>
+                    <option value="CMIYC">Catch Me If You Can</option>
+                </optgroup>
+            </select>
             <input type="text" name="subcategory">
             <br/>
             <h2>Interests</h2>
