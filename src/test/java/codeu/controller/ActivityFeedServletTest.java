@@ -14,35 +14,40 @@
 
 package codeu.controller;
 
+import codeu.model.data.Conversation;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
-import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
-import codeu.model.store.basic.UserProfileStore;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.Matchers;
 
-public class TestDataServletTest {
+public class ActivityFeedServletTest {
 
-  private TestDataServlet testDataServlet;
+  private ActivityFeedServlet activityFeedServlet;
   private HttpServletRequest mockRequest;
   private HttpSession mockSession;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
   private ConversationStore mockConversationStore;
-  private MessageStore mockMessageStore;
   private UserStore mockUserStore;
-  private UserProfileStore mockUserProfileStore;
 
   @Before
   public void setup() {
-    testDataServlet = new TestDataServlet();
+    activityFeedServlet = new ActivityFeedServlet();
 
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockSession = Mockito.mock(HttpSession.class);
@@ -50,53 +55,36 @@ public class TestDataServletTest {
 
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/testdata.jsp"))
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityFeed.jsp"))
         .thenReturn(mockRequestDispatcher);
 
     mockConversationStore = Mockito.mock(ConversationStore.class);
-    testDataServlet.setConversationStore(mockConversationStore);
-
-    mockMessageStore = Mockito.mock(MessageStore.class);
-    testDataServlet.setMessageStore(mockMessageStore);
+    activityFeedServlet.setConversationStore(mockConversationStore);
 
     mockUserStore = Mockito.mock(UserStore.class);
-    testDataServlet.setUserStore(mockUserStore);
-
-    mockUserProfileStore = Mockito.mock(UserProfileStore.class);
-    testDataServlet.setUserProfileStore(mockUserProfileStore);
-  }
+    activityFeedServlet.setUserStore(mockUserStore);
+   
+  } 
 
   @Test
   public void testDoGet() throws IOException, ServletException {
-    testDataServlet.doGet(mockRequest, mockResponse);
+    List<Conversation> fakeConversationList = new ArrayList<>();
+    UUID conversationOwnerUUID = UUID.randomUUID();
+    fakeConversationList.add(
+        new Conversation(UUID.randomUUID(), conversationOwnerUUID, "test_conversation", Instant.now()));
+    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
+    
+    ArrayList<String> fakeDisplayNames = new ArrayList<String>();
+    String displayName = "fakeUser";
+    User fakeUser = new User(conversationOwnerUUID, displayName, "fakePW", Instant.now());
+    Mockito.when(mockUserStore.getUser(conversationOwnerUUID)).thenReturn(fakeUser);
+    fakeDisplayNames.add(displayName);
 
+    
+    activityFeedServlet.doGet(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
+    Mockito.verify(mockRequest).setAttribute("displayNames", fakeDisplayNames);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-  }
-
-  @Test
-  public void testDoPost_Confirm() throws IOException, ServletException {
-    Mockito.when(mockRequest.getParameter("confirm")).thenReturn("confirm");
-
-    testDataServlet.doPost(mockRequest, mockResponse);
-
-    Mockito.verify(mockUserStore).loadTestData();   
-    Mockito.verify(mockUserProfileStore).loadTestData();
-    Mockito.verify(mockConversationStore).loadTestData();
-    Mockito.verify(mockMessageStore).loadTestData();
-    Mockito.verify(mockResponse).sendRedirect("/");
-  }
-
-  @Test
-  public void testDoPost_Cancel() throws IOException, ServletException {
-    Mockito.when(mockRequest.getParameter("confirm")).thenReturn(null);
-    Mockito.when(mockRequest.getParameter("cancel")).thenReturn("cancel");
-
-    testDataServlet.doPost(mockRequest, mockResponse);
-
-    Mockito.verify(mockUserStore, Mockito.never()).loadTestData();
-    Mockito.verify(mockUserProfileStore, Mockito.never()).loadTestData();
-    Mockito.verify(mockConversationStore, Mockito.never()).loadTestData();
-    Mockito.verify(mockMessageStore, Mockito.never()).loadTestData();
-    Mockito.verify(mockResponse).sendRedirect("/");
   }
 }

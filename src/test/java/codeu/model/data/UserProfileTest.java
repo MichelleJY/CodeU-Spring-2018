@@ -38,7 +38,7 @@ public class UserProfileTest {
     Assert.assertEquals(aboutMe, userProfile.getAboutMe());
     Assert.assertEquals(profilePicture, userProfile.getProfilePicture());
     Assert.assertEquals(interests, userProfile.getInterests()); 
-    Assert.assertEquals(lastTimeOnline, userProfile.getlastTimeOnline());
+    Assert.assertEquals(lastTimeOnline, userProfile.getLastTimeOnline());
   }
 
 
@@ -69,6 +69,6 @@ public class UserProfileTest {
     Assert.assertEquals(newAboutMe, userProfile.getAboutMe());
     Assert.assertEquals(newProfilePicture, userProfile.getProfilePicture());
     Assert.assertEquals(interests, userProfile.getInterests()); 
-    Assert.assertEquals(newTimeOnline, userProfile.getlastTimeOnline());
+    Assert.assertEquals(newTimeOnline, userProfile.getLastTimeOnline());
   }
 }

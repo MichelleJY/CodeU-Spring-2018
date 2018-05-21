@@ -1,21 +1,48 @@
-#pageContainer {
-    margin-left: 5%;
-    margin-right: auto;
-    width: auto;
+
+#midContainer {
+    position: absolute;
+    top: 15%;
+    left: 35%;
+    width: 700px;
+    margin: 0;
+    z-index: 100;
+
 }
 
 #leftContainer {
-    float: left;
-    width: 30%;
-}
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    margin: 0;
+    
+    
 
-#rightContainer {
-    float: right;
-    width: 30%;
 }
 
 #profilePicture {
     border-radius: 20%;
-    height: 50%;
-    width: 50%
+    width: 200px;
+  
 }
+
+form{
+    margin:0;
+    padding:0;
+    display:block;
+    }
+
+#interestBlock{
+    width: 500px;
+    height: 200px;
+    border-style: solid;
+    border: 2px, black;
+}
+
+#selector{
+    width: 200px;
+    padding: 40px;
+    border: 2px, black;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+}
+

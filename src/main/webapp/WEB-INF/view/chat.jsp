@@ -14,9 +14,15 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserProfileStore" %>
+<%@ page import="codeu.model.data.UserProfile" %>
+
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
@@ -28,6 +34,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <%@include file="navigationbar.jsp" %>
   <title><%= conversation.getTitle() %></title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
+  <link rel="stylesheet" href="/css/chat.css" type="text/css">
+
 
   <style>
     #chat {
@@ -43,6 +51,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       var chatDiv = document.getElementById('chat');
       chatDiv.scrollTop = chatDiv.scrollHeight;
     };
+
   </script>
 </head>
 <body onload="scrollChat()">
@@ -57,10 +66,50 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <ul>
     <%
       for (Message message : messages) {
+      /*%><div class = "profilenames" style= "color: green">
+        <%*/
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
-    %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+          %>
+      <li><div id="profileName"><%= author %>:</div>
+        <div id="commonInterests">
+          <%
+          
+          String result = "Common interests: ";
+          String currentUser = (String)request.getSession().getAttribute("user");
+
+          if (currentUser != null){
+            User currUser = UserStore.getInstance().getUser(currentUser);
+            User otherUser = UserStore.getInstance().getUser(author);
+            UserProfile currProf = UserProfileStore.getInstance().getUserProfile(currUser.getId());
+            UserProfile otherProf = UserProfileStore.getInstance().getUserProfile(otherUser.getId());
+            HashMap<String,String> currentInterests = (HashMap<String,String>)currProf.getInterests();
+            HashMap<String,String> otherInterests = (HashMap<String,String>)otherProf.getInterests();
+
+            for(String interest: currentInterests.keySet()){
+              if(otherInterests.containsKey(interest)){
+                String currInterest = currentInterests.get(interest);
+                String[] currSplit = currInterest.split(", ");
+
+                String otherInterest = otherInterests.get(interest);
+                String[] otherSplit = otherInterest.split(", ");
+
+                for(int i = 0; i < currSplit.length; i++)
+                  for(int j = 0; j < otherSplit.length; j++)
+                      if(currSplit[i].equals(otherSplit[j]))
+                        result += " " + currSplit[i] + ",";
+                      
+
+              }
+            }
+            if(result.equals("Common interests: "))
+              result = "No interests in common.";
+            else
+              result = result.substring(0, result.length()-1);
+          }
+          %>
+          <%= result %></div> 
+        <%= message.getContent() %></li>
     <%
       }
     %>

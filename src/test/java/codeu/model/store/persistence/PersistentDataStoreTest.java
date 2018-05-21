@@ -174,13 +174,13 @@ public class PersistentDataStoreTest {
     Assert.assertEquals("test_aboutMe_one", resultUserProfileOne.getAboutMe());
     Assert.assertEquals("test_profilePicture_one", resultUserProfileOne.getProfilePicture());
     Assert.assertEquals(interestsOne, resultUserProfileOne.getInterests());
-    Assert.assertEquals(lastTimeOnlineOne, resultUserProfileOne.getlastTimeOnline());
+    Assert.assertEquals(lastTimeOnlineOne, resultUserProfileOne.getLastTimeOnline());
 
     UserProfile resultUserProfileTwo = resultUsers.get(idOne);
     Assert.assertEquals(idTwo, resultUserProfileTwo.getId());
     Assert.assertEquals("test_aboutMe_two", resultUserProfileTwo.getAboutMe());
     Assert.assertEquals("test_profilePicture_two", resultUserProfileTwo.getProfilePicture());
     Assert.assertEquals(interestsTwo, resultUserProfileTwo.getInterests());
-    Assert.assertEquals(lastTimeOnlineTwo, resultUserProfileTwo.getlastTimeOnline());
+    Assert.assertEquals(lastTimeOnlineTwo, resultUserProfileTwo.getLastTimeOnline());
   }
 }

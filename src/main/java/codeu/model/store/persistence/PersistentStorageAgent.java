@@ -102,6 +102,27 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadUserProfiles();
   }
 
+  /**
+   * Delete all UserProfile objects from the Datastore service.
+   * 
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public void deleteUserProfiles() throws PersistentDataStoreException {
+    persistentDataStore.deleteUserProfiles();
+  }
+
+  /**
+   * Delete all UserProfile objects with the given uuid from the Datastore service.
+   * 
+   * @param uuid The UUID of the User Profile objects to be deleted.
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public void deleteUserProfiles(UUID uuid) throws PersistentDataStoreException {
+    persistentDataStore.deleteUserProfiles(uuid);
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     persistentDataStore.writeThrough(user);
@@ -116,7 +137,7 @@ public class PersistentStorageAgent {
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
   }
-/** Write a Conversation object to the Datastore service. */
+/** Write a UserProfile object to the Datastore service. */
   public void writeThrough(UserProfile userProfile) {
     persistentDataStore.writeThrough(userProfile);
   }

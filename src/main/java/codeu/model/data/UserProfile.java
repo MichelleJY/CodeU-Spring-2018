@@ -17,6 +17,7 @@ package codeu.model.data;
 import java.util.Map;
 import java.time.Instant;
 import java.util.UUID;
+import com.google.appengine.api.datastore.Key;
 
 /** Class representing a registered user's profile. */
 public class UserProfile {
@@ -25,6 +26,7 @@ public class UserProfile {
     private String profilePicture;
     private Map<String,String> interests;
     private Instant lastTimeOnline;
+    private Key entityKey;
 
     /**
       * Constructs a new UserProfile.
@@ -58,8 +60,12 @@ public class UserProfile {
         return this.interests;
     }
 
-    public Instant getlastTimeOnline() {
+    public Instant getLastTimeOnline() {
         return this.lastTimeOnline;
+    }
+
+    public Key getEntityKey() {
+        return this.entityKey;
     }
     
     public void setAboutMe(String about){
@@ -71,15 +77,21 @@ public class UserProfile {
     }
 
     public void addInterest(String category, String interest){
-        if(interests.containsKey(category))
-            interests.put(category, interests.get(category) + ", " + interest);
+        if (category == null || category.length() == 0 || interest == null || interest.length() == 0) {
+            return;
+        }
         
+        if (interests.containsKey(category))
+            interests.put(category, interests.get(category) + ", " + interest);
         else
-        interests.put(category, interest);
-
+            interests.put(category, interest);
     }
 
     public void setLastTimeOnline(Instant time){
         this.lastTimeOnline = time;
+    }
+
+    public void setEntityKey(Key entityKey) {
+        this.entityKey = entityKey;
     }
 }
