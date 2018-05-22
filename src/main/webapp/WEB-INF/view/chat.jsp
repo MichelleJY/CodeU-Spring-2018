@@ -53,11 +53,11 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     };
 
   </script>
-  <%--<script type="text/javascript">
+  <script type="text/javascript">
     setTimeout(function(){
         location = ''
     },10000)
-  </script>--%>
+  </script>
 </head>
 <body onload="scrollChat()">
   <div id="container">
