@@ -15,6 +15,8 @@
 --%>
 <%@ page import="java.util.*" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%--<%@ page import="codeu.model.store.UserStore" %>--%>
+
 <%@ page import="codeu.model.data.User" %>
 
 <!DOCTYPE html>
