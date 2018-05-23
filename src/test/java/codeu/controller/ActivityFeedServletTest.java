@@ -63,7 +63,6 @@ public class ActivityFeedServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     activityFeedServlet.setUserStore(mockUserStore);
-
   }
 
   @Test
@@ -83,7 +82,6 @@ public class ActivityFeedServletTest {
     List<User> fakeUsers = new ArrayList<>();
     fakeUsers.add(new User(UUID.randomUUID(),"fakeUsers","fakePW",Instant.now()));
     Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUsers);
-
 
     activityFeedServlet.doGet(mockRequest, mockResponse);
 

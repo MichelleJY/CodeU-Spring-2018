@@ -19,7 +19,6 @@
 
 <%@ page import="codeu.model.data.User" %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,8 +76,13 @@
       <%
       }
       %>
-    <%
-       }
+      <script type="text/javascript">
+          setTimeout(function(){
+              location = ''
+          },60000)
+      </script>
+    <% 
+       } 
     %>
     <hr/>
   </div>
