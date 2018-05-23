@@ -7,6 +7,7 @@
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
       <a href="/activityFeed">Activity Feed</a>
+      <a href="/logout">Logout</a>
       <a href="/profilepage/">My Profile</a>
     <% } else{ %>
       <a href="/login">Login</a>
@@ -16,4 +17,3 @@
       <a href="/about.jsp">About</a>
 
   </nav>
-
