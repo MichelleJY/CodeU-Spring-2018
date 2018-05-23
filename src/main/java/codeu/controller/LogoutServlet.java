@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 
-/** Servlet class responsible for the login page. */
+/** Servlet class responsible for the logout page. */
 public class LogoutServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
   /**
-   * Set up state for handling login-related requests. This method is only called when running in a
+   * Set up state for handling logout-related requests. This method is only called when running in a
    * server, not when running in a test.
    */
   @Override
@@ -36,8 +36,8 @@ public class LogoutServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user requests the /login URL. It simply forwards the request to
-   * login.jsp.
+   * This function fires when a user requests the /logout URL. It simply forwards the request to
+   * logout.jsp.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,9 +46,7 @@ public class LogoutServlet extends HttpServlet {
   }
 
    /**
-    * This function fires when a user submits the login form. It gets the username and password from
-    * the submitted form data, checks that they're valid, and either adds the user to the session
-    * so we know the user is logged in or shows an error to the user.
+    * This function fires when a user submits the logout.
     */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
