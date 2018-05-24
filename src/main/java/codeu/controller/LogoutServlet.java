@@ -14,27 +14,6 @@ import org.mindrot.jbcrypt.BCrypt;
 /** Servlet class responsible for the logout page. */
 public class LogoutServlet extends HttpServlet {
 
-  /** Store class that gives access to Users. */
-  private UserStore userStore;
-
-  /**
-   * Set up state for handling logout-related requests. This method is only called when running in a
-   * server, not when running in a test.
-   */
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    setUserStore(UserStore.getInstance());
-  }
-
-  /**
-   * Sets the UserStore used by this servlet. This function provides a common setup method for use
-   * by the test framework or the servlet's init() function.
-   */
-  void setUserStore(UserStore userStore) {
-    this.userStore = userStore;
-  }
-
   /**
    * This function fires when a user requests the /logout URL. It simply forwards the request to
    * logout.jsp.

@@ -17,7 +17,7 @@
 <html>
 <head>
    <%@include file="navigationbar.jsp" %>
-  <title>Login</title>
+  <title>Logout</title>
   <link rel="stylesheet" href="/css/main.css">
     <style>
     label {
