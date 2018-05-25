@@ -14,5 +14,5 @@
 
     <% } %>
       <a href="/about.jsp" class="nav">About</a>
-
+       <a href="/logout" class ="nav">Logout</a>
   </nav>
