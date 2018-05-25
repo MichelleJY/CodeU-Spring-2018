@@ -71,7 +71,6 @@
                 } 
                 %></textarea>
             <br/>
-        </form>
 
         <h1>Interests</h1>
             <select name="myFavorites" id="selector">
@@ -85,7 +84,7 @@
             </select>
             <br/>
             <select name="subcategorySelect" id="selector">
-                <option selected="selected" value="nothing">None of these</option>
+                <option value="nothing">None of these</option>
                 <optgroup label="Books">
                     <option value="GoblinSlayer">Goblin Slayer</option>
                     <option value="GoT">Game Of Thrones</option>
@@ -124,6 +123,7 @@
             </select>
             <input type="text" name="subcategory">
             <br/><br/>
+        </form>
         <div id="interestBlock">
             <%
             if (request.getSession().getAttribute("interests") != null) {
