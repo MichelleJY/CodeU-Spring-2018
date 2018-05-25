@@ -62,6 +62,7 @@ public class LogoutServletTest {
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     logoutServlet.doPost(mockRequest, mockResponse);
+    Mockito.verify(mockSession).invalidate();
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 }
