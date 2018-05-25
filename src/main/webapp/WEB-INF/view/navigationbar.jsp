@@ -16,4 +16,3 @@
       <a href="/about.jsp" class="nav">About</a>
 
   </nav>
-
