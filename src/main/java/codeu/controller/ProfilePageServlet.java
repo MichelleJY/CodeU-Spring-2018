@@ -136,7 +136,10 @@ public class ProfilePageServlet extends HttpServlet {
       String aboutMe = request.getParameter("aboutMe");
       String profilePicture = request.getParameter("profilePicture");
       String category = request.getParameter("myFavorites");
-      String subCategory = request.getParameter("subcategory");
+      String subCategory = request.getParameter("subcategorySelect");
+      if (subCategory == null || subCategory.equals("nothing")) {
+        subCategory = request.getParameter("subcategory");
+      }
 
       userProfile.setLastTimeOnline(Instant.now());
       userProfile.setAboutMe(aboutMe);
