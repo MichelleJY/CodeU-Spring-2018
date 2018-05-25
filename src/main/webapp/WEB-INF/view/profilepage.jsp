@@ -70,14 +70,14 @@
         </form>
 
         <h1>Interests</h1>
-                <select name="myFavorites" id="selector">
-                    <option value="Books">Book</option>
-                    <option value="Food">Food</option>
-                    <option value="Hobbies">Hobbies</option>
-                    <option value="Movies">Movies</option>
-                    <option value="Songs">Songs</option>
-                    <option value="Sports">Sports</option>
-                    <option value="TV Shows">Tv Shows</option>
+            <select name="myFavorites" id="selector">
+                <option value="Books">Book</option>
+                <option value="Food">Food</option>
+                <option value="Hobbies">Hobbies</option>
+                <option value="Movies">Movies</option>
+                <option value="Songs">Songs</option>
+                <option value="Sports">Sports</option>
+                <option value="TV Shows">Tv Shows</option>
             </select>
             <br/>
             <select name="subcategorySelect" id="selector">
@@ -121,15 +121,14 @@
             <input type="text" name="subcategory">
             <br/><br/>
         <div id="interestBlock">
-          
-                <%
-                if (request.getSession().getAttribute("interests") != null) {
-                    HashMap<String, String> interests = (HashMap<String,String>) request.getSession().getAttribute("interests");
-                    for (String interest : interests.keySet()) {
-                        out.print(interest + ": " + interests.get(interest) + "<br/>");
-                    }
+            <%
+            if (request.getSession().getAttribute("interests") != null) {
+                HashMap<String, String> interests = (HashMap<String,String>) request.getSession().getAttribute("interests");
+                for (String interest : interests.keySet()) {
+                    out.print(interest + ": " + interests.get(interest) + "<br/>");
                 }
-                %>
+            }
+            %>
         </div>
     </div>
 </body>
