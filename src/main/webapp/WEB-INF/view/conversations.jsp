@@ -46,6 +46,8 @@
 
     <h1>Conversations</h1>
 
+     <p>Is the conversation getting dull? Find out common interests with your chat friends! Hover over their username to display what interests you match on.<p>
+
     <%
     List<Conversation> conversations =
       (List<Conversation>) request.getAttribute("conversations");
