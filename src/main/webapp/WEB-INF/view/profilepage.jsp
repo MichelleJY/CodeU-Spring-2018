@@ -27,7 +27,7 @@
                     <option value="/resources/images/profile-pictures/happy_man.jpg">Happy Man</option>
                     <option value="/resources/images/profile-pictures/scenery.jpg">Scene</option>
                     <option value="/resources/images/profile-pictures/thumbsup.jpg">Thumbs Up</option>
-                    <option value=/resources/images/profile-pictures/codeguy.png>Code Guy</option>
+                    <option value="/resources/images/profile-pictures/codeguy.png">Code Guy</option>
                     <option value="/resources/images/profile-pictures/Determination.png">Determination</option>
                     <option value="/resources/images/profile-pictures/cat.jpg">Kitties</option>
                     <option value="/resources/images/profile-pictures/puppy.jpg">Puppy</option>
