@@ -65,10 +65,16 @@ public class ProfilePageServlet extends HttpServlet {
     String requestUrl = request.getRequestURI();
     String profileUsername = null;
     if (requestUrl.contains("/profilepage/")) profileUsername = requestUrl.substring("/profilepage/".length());
-    if (profileUsername != null && profileUsername.length() > 0) {
+    if (profileUsername != null && !profileUsername.equals("null") && profileUsername.length() > 0) {
       username = profileUsername;
-      request.getSession().setAttribute("user", null);
+      request.getSession().setAttribute("profileUsername", profileUsername);
+      request.getSession().setAttribute("currentProfile", null);
     }
+    else {
+      request.getSession().setAttribute("profileUsername", null);
+      request.getSession().setAttribute("currentProfile", true);
+    }
+
     if(username == null){
       request.setAttribute("error", "That username doesn't exist");
       response.sendRedirect("/login");
