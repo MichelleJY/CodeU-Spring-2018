@@ -15,9 +15,13 @@
 <body>
     <div id="leftContainer">
         <h1>
-        <% if(request.getSession().getAttribute("user") != null){ %>
-            <%= request.getSession().getAttribute("user") %>'s 
-        <% } %>
+        <%  if (request.getSession().getAttribute("profileUsername") != null) {
+                out.print(request.getSession().getAttribute("profileUsername") + "'s");
+            }
+            else if (request.getSession().getAttribute("user") != null) { 
+                out.print(request.getSession().getAttribute("user") + "'s"); 
+            } 
+        %>
         Profile Page</h1>
 
         <form action="/profilepage/" method="POST">
@@ -54,7 +58,7 @@
                 %>
             </h2>
             
-            <input type="submit" value="Update Profile">
+            <input <% if (request.getSession().getAttribute("currentProfile") == null) out.print("hidden"); %> type="submit" value="Update Profile">
             <input name="resetProfile" id="resetCheck" type="checkbox">
             <label for="resetCheck">Reset Profile?</label>
             <br/>
