@@ -86,7 +86,7 @@
             <select name="subcategorySelect" id="selector">
                 <option value="nothing">None of these</option>
                 <optgroup label="Books">
-                    <option value="GoblinSlayer">Goblin Slayer</option>
+                    <option value="Goblin Slayer">Goblin Slayer</option>
                     <option value="GoT">Game Of Thrones</option>
                     <option value="CMIYC">Catch Me If You Can</option>
                 </optgroup>
@@ -98,26 +98,26 @@
                 <optgroup label="Hobbies">
                     <option value="Cooking">Cooking</option>
                     <option value="Reading">Reading</option>
-                    <option value="UpsideDownWaterSledding">UpsideDownWaterSledding</option>
+                    <option value="Upside Down Water Sledding">Upside Down Water Sledding</option>
                 </optgroup>
                 <optgroup label="Movies">
-                    <option value="Deadpool2">Deadpool 2</option>
+                    <option value="Deadpool 2">Deadpool 2</option>
                     <option value="Madea">Madea</option>
-                    <option value="JamesBond">James Bond</option>
+                    <option value="James Bond">James Bond</option>
                 </optgroup>
                 <optgroup label="Songs">
-                    <option value="NetflixTrip">Netflix Trip by AJR</option>
-                    <option value="TheWolf">The Wolf by Siames</option>
+                    <option value="Netflix Trip">Netflix Trip by AJR</option>
+                    <option value="The Wolf">The Wolf by Siames</option>
                     <option value="Despacito">Despacito by Luis Fonsi</option>
                 </optgroup>
                 <optgroup label="Sports">
                     <option value="Snowboarding">Snowboarding</option>
-                    <option value="RockClimbing">Rock Climbing</option>
+                    <option value="Rock Climbing">Rock Climbing</option>
                     <option value="Basketball">Basketball</option>
                 </optgroup>
                 <optgroup label="TV Shows">
-                    <option value="BlackMirror">Black Mirror</option>
-                    <option value="AdventureTime">Adventure Time</option>
+                    <option value="Black Mirror">Black Mirror</option>
+                    <option value="Adventure Time">Adventure Time</option>
                     <option value="Fargo">Fargo</option>
                 </optgroup>
             </select>
