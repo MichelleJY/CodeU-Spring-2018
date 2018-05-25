@@ -17,6 +17,7 @@ package codeu.controller;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.UserProfileStore;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,6 +38,7 @@ public class TestDataServletTest {
   private ConversationStore mockConversationStore;
   private MessageStore mockMessageStore;
   private UserStore mockUserStore;
+  private UserProfileStore mockUserProfileStore;
 
   @Before
   public void setup() {
@@ -59,6 +61,9 @@ public class TestDataServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     testDataServlet.setUserStore(mockUserStore);
+
+    mockUserProfileStore = Mockito.mock(UserProfileStore.class);
+    testDataServlet.setUserProfileStore(mockUserProfileStore);
   }
 
   @Test
@@ -74,7 +79,8 @@ public class TestDataServletTest {
 
     testDataServlet.doPost(mockRequest, mockResponse);
 
-    Mockito.verify(mockUserStore).loadTestData();
+    Mockito.verify(mockUserStore).loadTestData();   
+    Mockito.verify(mockUserProfileStore).loadTestData();
     Mockito.verify(mockConversationStore).loadTestData();
     Mockito.verify(mockMessageStore).loadTestData();
     Mockito.verify(mockResponse).sendRedirect("/");
@@ -88,6 +94,7 @@ public class TestDataServletTest {
     testDataServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockUserStore, Mockito.never()).loadTestData();
+    Mockito.verify(mockUserProfileStore, Mockito.never()).loadTestData();
     Mockito.verify(mockConversationStore, Mockito.never()).loadTestData();
     Mockito.verify(mockMessageStore, Mockito.never()).loadTestData();
     Mockito.verify(mockResponse).sendRedirect("/");
