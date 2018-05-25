@@ -1,6 +1,6 @@
-#nav:hover{
+.nav:hover{
 	background-color: #EEF9FD;
 	border-radius: 2px;
 	color: black;
-	/*we can change this color in a further update*/
+	padding: 4px;
 }

@@ -19,7 +19,6 @@
   <%@include file="WEB-INF/view/navigationbar.jsp" %>
   <title>CodeU Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
   <div id="container">
