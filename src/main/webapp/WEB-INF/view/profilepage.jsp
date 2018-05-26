@@ -15,9 +15,13 @@
 <body>
     <div id="leftContainer">
         <h1>
-        <% if(request.getSession().getAttribute("user") != null){ %>
-            <%= request.getSession().getAttribute("user") %>'s 
-        <% } %>
+        <%  if (request.getSession().getAttribute("profileUsername") != null) {
+                out.print(request.getSession().getAttribute("profileUsername") + "'s");
+            }
+            else if (request.getSession().getAttribute("user") != null) { 
+                out.print(request.getSession().getAttribute("user") + "'s"); 
+            } 
+        %>
         Profile Page</h1>
 
         <form action="/profilepage/" method="POST">
@@ -27,7 +31,7 @@
                     <option value="/resources/images/profile-pictures/happy_man.jpg">Happy Man</option>
                     <option value="/resources/images/profile-pictures/scenery.jpg">Scene</option>
                     <option value="/resources/images/profile-pictures/thumbsup.jpg">Thumbs Up</option>
-                    <option value=/resources/images/profile-pictures/codeguy.png>Code Guy</option>
+                    <option value="/resources/images/profile-pictures/codeguy.png">Code Guy</option>
                     <option value="/resources/images/profile-pictures/Determination.png">Determination</option>
                     <option value="/resources/images/profile-pictures/cat.jpg">Kitties</option>
                     <option value="/resources/images/profile-pictures/puppy.jpg">Puppy</option>
@@ -54,7 +58,7 @@
                 %>
             </h2>
             
-            <input type="submit" value="Update Profile">
+            <input <% if (request.getSession().getAttribute("currentProfile") == null) out.print("hidden"); %> type="submit" value="Update Profile">
             <input name="resetProfile" id="resetCheck" type="checkbox">
             <label for="resetCheck">Reset Profile?</label>
             <br/>
@@ -67,31 +71,68 @@
                 } 
                 %></textarea>
             <br/>
-        </form>
 
         <h1>Interests</h1>
-                <select name="myFavorites" id="selector">
-                    <option value="Books">Book</option>
-                    <option value="Food">Food</option>
-                    <option value="Hobbies">Hobbies</option>
-                    <option value="Movies">Movies</option>
-                    <option value="Songs">Songs</option>
-                    <option value="Sports">Sports</option>
-                    <option value="TV Shows">Tv Shows</option>
+            <select name="myFavorites" id="selector">
+                <option value="Books">Book</option>
+                <option value="Food">Food</option>
+                <option value="Hobbies">Hobbies</option>
+                <option value="Movies">Movies</option>
+                <option value="Songs">Songs</option>
+                <option value="Sports">Sports</option>
+                <option value="TV Shows">Tv Shows</option>
             </select>
             <br/>
+            <select name="subcategorySelect" id="selector">
+                <option value="nothing">None of these</option>
+                <optgroup label="Books">
+                    <option value="Goblin Slayer">Goblin Slayer</option>
+                    <option value="GoT">Game Of Thrones</option>
+                    <option value="CMIYC">Catch Me If You Can</option>
+                </optgroup>
+                <optgroup label="Food">
+                    <option value="Waffles">Waffles</option>
+                    <option value="Wings">Wings</option>
+                    <option value="Pho">Pho</option>
+                </optgroup>
+                <optgroup label="Hobbies">
+                    <option value="Cooking">Cooking</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Upside Down Water Sledding">Upside Down Water Sledding</option>
+                </optgroup>
+                <optgroup label="Movies">
+                    <option value="Deadpool 2">Deadpool 2</option>
+                    <option value="Madea">Madea</option>
+                    <option value="James Bond">James Bond</option>
+                </optgroup>
+                <optgroup label="Songs">
+                    <option value="Netflix Trip">Netflix Trip by AJR</option>
+                    <option value="The Wolf">The Wolf by Siames</option>
+                    <option value="Despacito">Despacito by Luis Fonsi</option>
+                </optgroup>
+                <optgroup label="Sports">
+                    <option value="Snowboarding">Snowboarding</option>
+                    <option value="Rock Climbing">Rock Climbing</option>
+                    <option value="Basketball">Basketball</option>
+                </optgroup>
+                <optgroup label="TV Shows">
+                    <option value="Black Mirror">Black Mirror</option>
+                    <option value="Adventure Time">Adventure Time</option>
+                    <option value="Fargo">Fargo</option>
+                </optgroup>
+            </select>
             <input type="text" name="subcategory">
             <br/><br/>
+        </form>
         <div id="interestBlock">
-          
-                <%
-                if (request.getSession().getAttribute("interests") != null) {
-                    HashMap<String, String> interests = (HashMap<String,String>) request.getSession().getAttribute("interests");
-                    for (String interest : interests.keySet()) {
-                        out.print(interest + ": " + interests.get(interest) + "<br/>");
-                    }
+            <%
+            if (request.getSession().getAttribute("interests") != null) {
+                HashMap<String, String> interests = (HashMap<String,String>) request.getSession().getAttribute("interests");
+                for (String interest : interests.keySet()) {
+                    out.print(interest + ": " + interests.get(interest) + "<br/>");
                 }
-                %>
+            }
+            %>
         </div>
     </div>
 </body>

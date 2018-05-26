@@ -63,10 +63,18 @@ public class ProfilePageServlet extends HttpServlet {
 
     String username = (String)request.getSession().getAttribute("user"); 
     String requestUrl = request.getRequestURI();
-    String profileUsername = requestUrl.substring("/profilepage/".length());
-    if (profileUsername != null && profileUsername.length() > 0) {
+    String profileUsername = null;
+    if (requestUrl.contains("/profilepage/")) profileUsername = requestUrl.substring("/profilepage/".length());
+    if (profileUsername != null && !profileUsername.equals("null") && profileUsername.length() > 0) {
       username = profileUsername;
+      request.getSession().setAttribute("profileUsername", profileUsername);
+      request.getSession().setAttribute("currentProfile", null);
     }
+    else {
+      request.getSession().setAttribute("profileUsername", null);
+      request.getSession().setAttribute("currentProfile", true);
+    }
+
     if(username == null){
       request.setAttribute("error", "That username doesn't exist");
       response.sendRedirect("/login");
@@ -134,7 +142,10 @@ public class ProfilePageServlet extends HttpServlet {
       String aboutMe = request.getParameter("aboutMe");
       String profilePicture = request.getParameter("profilePicture");
       String category = request.getParameter("myFavorites");
-      String subCategory = request.getParameter("subcategory");
+      String subCategory = request.getParameter("subcategorySelect");
+      if (subCategory == null || subCategory.equals("nothing")) {
+        subCategory = request.getParameter("subcategory");
+      }
 
       userProfile.setLastTimeOnline(Instant.now());
       userProfile.setAboutMe(aboutMe);
