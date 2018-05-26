@@ -25,7 +25,7 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>CodeU Chat App</h1>
+      <h1>ChatU</h1>
       <h2>Welcome to Team 18's chat app!</h2>
 
       <ul>
